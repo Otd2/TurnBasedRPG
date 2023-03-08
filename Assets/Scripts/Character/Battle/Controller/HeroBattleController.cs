@@ -1,39 +1,41 @@
-﻿using DefaultNamespace;
+﻿using BattleStates;
+using BattleStates.StateMachine;
+using Character.Base;
+using Character.Battle.Model;
+using Character.Battle.View;
+using DefaultNamespace;
+using PersistentData;
 using UnityEngine;
 
-namespace Character
+namespace Character.Battle.Controller
 {
-    public class HeroBattleController : CharacterBattleController
+    public class HeroBattleController : UnitBattleController
     {
-        public override void Destroy()
+        public override void SetTurnStatus(bool isUnitsTurn)
         {
-            base.Destroy();
+            if (Model.IsDead)
+                return;
+            
+            base.SetTurnStatus(isUnitsTurn);
+            ((HeroView)UnitView).SetInteractable(Model.IsUnitsTurn);
         }
 
-        public override void SetCharacterState(CharacterBattleState battleState)
-        {
-            base.SetCharacterState(battleState);
-            ((HeroView)_unitView).SetInteractable(isActive);
-        }
-
-        public void MatchEnded()
+        public void BattleEnd()
         {
             if (!IsDead)
             {
-                _model.RewardEarned();
-                PlayerPrefsPersistentDataManager.GetCharacterData(_model.Id).Exp = _model.LevelDataLogic.Xp;
-                PlayerPrefsPersistentDataManager.GetCharacterData(_model.Id).Lvl = _model.LevelDataLogic.Level;
+                ((HeroBattleModel)Model).RewardEarned();
             }
         }
 
         public void ShowInfoPopup()
         {
             ServiceLocator.Instance.InfoPopupController.SetData
-                (_model, Camera.current.WorldToScreenPoint(_unitView.transform.position));
+                (Model, Camera.current.WorldToScreenPoint(UnitView.transform.position));
         }
 
-        public HeroBattleController(UnitView view, UnitBattleModel model, PlayerPrefsPersistentDataManager playerPrefsPersistentDataManager,
-            ITurnManager turnManager) : base(view, model, playerPrefsPersistentDataManager, turnManager)
+        public HeroBattleController(UnitView view, UnitBattleModel model,
+            IBattleStateMachine battleStateMachine) : base(view, model, battleStateMachine)
         {
         }
     }

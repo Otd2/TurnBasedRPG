@@ -1,31 +1,36 @@
-﻿using DefaultNamespace.Health;
-using DG.Tweening;
+﻿using System;
+using Character.Base;
+using HitPoint;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-namespace Character
+namespace Character.Battle.View
 {
     public class BattleUnitView : UnitView
     {
+        #region Fields
         [SerializeField] private SpriteRenderer heroSprite;
         [SerializeField] private HPBarView healthBarView;
         [SerializeField] private Transform attackPoint;
+        [SerializeField] private CharacterAnimationController animationController;
+        #endregion
 
-        public Vector3 GetAttackPoint() => attackPoint.position;
+        #region Properties
+        public CharacterAnimationController AnimationController => animationController;
+        public Vector3 GetAttackPosition() => attackPoint.position;
+        #endregion
 
-        public void SetHpBar(DynamicHealth health)
+        private void Awake()
+        {
+            heroSprite.transform.localScale = Vector3.zero;
+        }
+
+        public void ConnectHpBar(Health health)
         {
             healthBarView.SetTotalHp(health.TotalHp);
             healthBarView.SetHp(health.GetHp());
             health.OnHealthChanged += healthBarView.SetHp;
         }
-
-        public override void Destroy()
-        {
-            base.Destroy();
-        }
-
+        
         public void SetSprite(Sprite sprite)
         {
             heroSprite.sprite = sprite;

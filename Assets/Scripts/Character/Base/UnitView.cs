@@ -1,18 +1,18 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Character
+namespace Character.Base
 {
     public abstract class UnitView : MonoBehaviour
     {
-        protected CharacterController _controller;
+        protected CharacterController Controller;
 
         public virtual void SetController(CharacterController controller)
         {
-            this._controller = controller;
+            Controller = controller;
         }
 
-        public virtual void Destroy()
+        public void Destroy()
         {
             transform.DOKill();
             Destroy(gameObject);

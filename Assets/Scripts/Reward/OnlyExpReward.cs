@@ -1,6 +1,6 @@
 ﻿public class OnlyExpReward : IReward
 {
-    private int _expAmount;
+    private readonly int _expAmount;
     
     public int GetRewardedExp()
     {

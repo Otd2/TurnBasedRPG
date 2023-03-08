@@ -1,34 +1,34 @@
 using Character;
-using DefaultNamespace.Target;
+using Character.Battle.Controller;
+using Character.Battle.View;
 using UnityEngine;
 
-namespace DefaultNamespace.Attack
+namespace Attack
 {
     public class AttackBase : IAttack
     {
-        //Attack Events
-        public delegate void OnAttackEndEvent();
-        public event OnAttackEndEvent OnAttackEnd;
-        
-        public delegate void OnAttackStartedEvent();
-        public event OnAttackStartedEvent OnAttackStarted;
+        protected readonly BattleUnitView AttackSourceView;
+        protected readonly float AnimDelay;
+        protected readonly float AnimTime;
+        private readonly IAttackListener _attackListener;
 
-        public delegate void OnApplyDamageEvent();
-        public event OnApplyDamageEvent OnApplyDamage;
+        public AttackBase(BattleUnitView attackSourceView, float animDelay,
+            float animTime, IAttackListener attackListener)
+        {
+            AttackSourceView = attackSourceView;
+            AnimDelay = animDelay;
+            AnimTime = animTime;
+            _attackListener = attackListener;
+        }
 
         protected void AttackEnd()
         {
-            OnAttackEnd?.Invoke();
+            _attackListener.OnAttackEnd();
         }
         
         private void AttackStarted()
         {
-            OnAttackStarted?.Invoke();
-        }
-        
-        public virtual void ApplyDamage(int damage)
-        {
-            OnApplyDamage?.Invoke();
+            _attackListener.OnAttackStarted();
         }
 
         public virtual void Execute(int damage)
@@ -36,5 +36,6 @@ namespace DefaultNamespace.Attack
             AttackStarted();
         }
 
+        protected virtual void ApplyDamage(int damage) { }
     }
 }

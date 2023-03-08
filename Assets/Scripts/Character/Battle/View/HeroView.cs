@@ -1,12 +1,9 @@
-﻿using Character;
-using DefaultNamespace.Health;
-using DG.Tweening;
+﻿using Character.Battle.Controller;
 using Input;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using CharacterController = Character.Base.CharacterController;
 
-namespace Character
+namespace Character.Battle.View
 {
     public class HeroView : BattleUnitView
     {
@@ -14,9 +11,10 @@ namespace Character
         public override void SetController(CharacterController controller)
         {
             base.SetController(controller);
-            interactionManager =
-                new InteractionManager();
-            interactionManager.AssignLongTouchDetector(gameObject, OnLongTouch, OnShortTouch, OnTouchStarted);
+            
+            //Interaction Management
+            interactionManager = new InteractionManager();
+            interactionManager.AssignLongTouchDetector(gameObject, OnLongTouch, OnShortTouch, null);
         }
 
         public void SetInteractable(bool isActive)
@@ -24,26 +22,14 @@ namespace Character
             interactionManager.SetInteractable(isActive);
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-        }
-
-        private void OnTouchStarted()
-        {
-            //Set Animation
-        }
-
         private void OnLongTouch()
         {
-            ((HeroBattleController)_controller).ShowInfoPopup();
+            ((HeroBattleController)Controller).ShowInfoPopup();
         }
 
         private void OnShortTouch()
         {
-            //Interraction
-            
-            ((HeroBattleController)_controller).Attack();
+            ((HeroBattleController)Controller).Attack();
         }
     }
     

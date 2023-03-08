@@ -1,19 +1,34 @@
-﻿using DefaultNamespace.Health;
+﻿using Character.Base;
+using PersistentData;
 
 namespace Character
 {
     public class UnitUIModel : UnitModelBase
     {
-        public bool _isUnlocked;
-        public bool _isSelected;
+        private bool _isSelected;
 
-        public UnitUIModel(int id, int level, int xp, CharacterAttributes attributes, bool isUnlocked, bool isSelected) : 
-            base(id, level, xp, attributes)
+        public bool IsSelected => _isSelected;
+
+        public UnitUIModel(int id, int level, int xp, CharacterAttributes attributes
+            , PersistantDataManager persistantDataManager) : 
+            base(id, level, xp, attributes, persistantDataManager)
         {
+            _isSelected = persistantDataManager.CurrentGameData.selectedHeroes.Contains(Id);
+        }
+
+        public void Select()
+        {
+            if (PersistentDataManager.CurrentGameData.selectedHeroes.Count >= 3)
+                return;
             
-            hp = new Health(level, attributes.BaseHealth);
-            _isUnlocked = isUnlocked;
-            _isSelected = isSelected;
+            _isSelected = true;
+            PersistentDataManager.CurrentGameData.selectedHeroes.Add(Id);
+        }
+        
+        public void Deselect()
+        {
+            _isSelected = false;
+            PersistentDataManager.CurrentGameData.selectedHeroes.Remove(Id);
         }
     }
 }

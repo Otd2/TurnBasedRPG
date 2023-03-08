@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 99
   attributes:
-    isEnemy: 1
     name: Enemy
     sprite: {fileID: 21300000, guid: f8af048086424df44afb40c4d6d95d96, type: 3}
-    baseHealth: 100
-    baseAttackPower: 30
-    skillSet: 01000000
+    baseHealth: 250
+    baseAttackPower: 10
+    attackType: 1

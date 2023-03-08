@@ -1,16 +1,17 @@
-﻿using Character;
+﻿using System;
+using Character.Battle.Controller;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace DefaultNamespace
+namespace FloatingText
 {
     public class FloatingTextPoolController : MonoBehaviour
     {
         public int maxPoolSize = 5;
         public bool collectionChecks = true;
-        IObjectPool<TextMeshPro> m_Pool;
+        IObjectPool<TextMeshPro> _pool;
         
         public TextMeshPro poolPrefab;
         
@@ -18,20 +19,20 @@ namespace DefaultNamespace
         {
             get
             {
-                if (m_Pool == null)
+                if (_pool == null)
                 {
 
-                    m_Pool = new ObjectPool<TextMeshPro>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool,
+                    _pool = new ObjectPool<TextMeshPro>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool,
                         OnDestroyPoolObject, collectionChecks, 10, maxPoolSize);
                 }
 
-                return m_Pool;
+                return _pool;
             }
         }
         
-        private Transform parent;
-        
-        public void ScoreEffect(Vector3 position, int damage)
+        private Transform _parent;
+
+        private void ScoreEffect(Vector3 position, int damage)
         {
             var text = Pool.Get();
             text.text = "" + damage;
@@ -46,14 +47,23 @@ namespace DefaultNamespace
         
         public void Init()
         {
-            GameObject particlesContainer = new GameObject("ScoreUIEffects");
-            parent = particlesContainer.transform;
+            GameObject particlesContainer = new GameObject("DamageEffects");
+            _parent = particlesContainer.transform;
             for (int i = 0; i < maxPoolSize; i++)
             {
                 CreatePooledItem();
             }
             
-            CharacterBattleController.OnAnyDamageReceived += OnAnyDamageReceived;
+        }
+
+        private void OnEnable()
+        {
+            //Listens if any damage received to any type of unit
+            UnitBattleController.OnAnyDamageReceived += OnAnyDamageReceived;
+        }
+        private void OnDisable()
+        {
+            UnitBattleController.OnAnyDamageReceived -= OnAnyDamageReceived;
         }
 
         private void OnAnyDamageReceived(int damage, Vector3 pos)
@@ -63,7 +73,7 @@ namespace DefaultNamespace
 
         TextMeshPro CreatePooledItem()
         {
-            var go = Instantiate(poolPrefab.gameObject, parent);
+            var go = Instantiate(poolPrefab.gameObject, _parent);
             var textMesh = go.GetComponent<TextMeshPro>();
             textMesh.color = Color.clear;
         

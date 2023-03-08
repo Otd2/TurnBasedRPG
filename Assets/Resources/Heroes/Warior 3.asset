@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   attributes:
-    isEnemy: 0
-    name: Warior
-    sprite: {fileID: 21300000, guid: 995241d8471f2b3419868f01ff0563d7, type: 3}
-    baseHealth: 100
+    name: Eldrid the Enchanter
+    sprite: {fileID: 21300000, guid: 094c5b13028c3a54e8b9e2a6c14cc0ce, type: 3}
+    baseHealth: 60
     baseAttackPower: 40
-    skillSet: 00000000
+    attackType: 0

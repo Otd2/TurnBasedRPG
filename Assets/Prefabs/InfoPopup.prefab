@@ -855,6 +855,7 @@ MonoBehaviour:
   txt_exp: {fileID: 6670921098026901546}
   txt_level: {fileID: 6670921099254022719}
   infoPopup: {fileID: 6670921098132572490}
+  closeButton: {fileID: 332394224}
 --- !u!1 &6670921099810356690
 GameObject:
   m_ObjectHideFlags: 0

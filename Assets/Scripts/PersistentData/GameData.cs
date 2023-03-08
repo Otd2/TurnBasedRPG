@@ -2,24 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace PersistentData
 {
     [System.Serializable]
     public class GameData
     {
-        public CharactersDictionary CharacterData;
+        public CharactersDictionary CharactersData;
         public int totalMatchCount;
         public List<int> selectedHeroes;
         [SerializeField] public BattleData BattleData;
 
         public GameData()
         {
-            CharacterData = new CharactersDictionary();
+            CharactersData = new CharactersDictionary();
             BattleData = null;
         }
     }
-    
-    
+
     [Serializable]
     public class CharactersDictionary : SerializableDictionary<int, CharacterData> {}
     
@@ -27,27 +26,6 @@ namespace DefaultNamespace
     [Serializable]
     public class BattleCharacterDictionary : SerializableDictionary<int, int> {}
 
-    public class BattleCharacterData
-    {
-        private readonly int _id;
-        private int _hp;
-
-        public BattleCharacterData(int id, int hp)
-        {
-            _id = id;
-            Hp = hp;
-        }
-
-        public int ID => _id;
-
-        public int Hp
-        {
-            get => _hp;
-            set => _hp = value;
-        }
-    }
-    
-    
     [System.Serializable]
     public class BattleData
     {

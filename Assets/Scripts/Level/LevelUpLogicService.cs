@@ -4,7 +4,7 @@ namespace Level
 {
     public class LevelUpLogicService : ILevelUpLogicService
     {
-        private int _levelUpXp;
+        private readonly int _levelUpXp;
 
         public LevelUpLogicService(int levelUpXp)
         {

@@ -1,40 +1,93 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
 using System.Linq;
+using Character.Menu;
+using MiscUtil.Collections.Extensions;
+using PersistentData;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using CharacterController = Character.Base.CharacterController;
 
 namespace Character
 {
     public class CharacterSelectingUI : MonoBehaviour
     {
-        [SerializeField] private Button BattleStartButton;
-        [SerializeField] private GameObject DummyCharacterUIView;
+        [SerializeField] private Button battleStartButton;
+        [SerializeField] private GameObject dummyCharacterUIView;
+        [SerializeField] private CharacterUIView characterUiView;
         [SerializeField] private Transform charactersUIParent;
         
         private List<CharacterController> _createdCharacters;
         private List<GameObject> _dummyButtons;
-        private PlayerPrefsPersistentDataManager _playerPrefsPersistentDataManager;
-        private CharacterUIViewFactory _uiViewFactory;
-        private GameInitializer _gameInitializer;
+        private PersistantDataManager _persistentDataManager;
+        private MenuCharacterFactory _factory;
 
-        public void Init(GameConfig config, PlayerPrefsPersistentDataManager playerPrefsPersistentDataManager,
-            GameInitializer gameInitializer)
+        public void Init(PersistantDataManager persistentDataManager, UnityAction onBattleStarted)
         {
-            BattleStartButton.onClick.AddListener(OnBattleStarted);
+            battleStartButton.onClick.AddListener(onBattleStarted);
+            _persistentDataManager = persistentDataManager;
             
-            _gameInitializer = gameInitializer;
-            _playerPrefsPersistentDataManager = playerPrefsPersistentDataManager;
+            _factory =
+                new MenuCharacterFactory(characterUiView, persistentDataManager);
             
-            _uiViewFactory =
-                new CharacterUIViewFactory(config.characterUIView, playerPrefsPersistentDataManager);
-            
-            CharacterUIController.OnAnyCharacerSelected += OnHeroSelectClicked;
+            CharacterUIController.OnAnyCharacterSelected += OnHeroSelectClicked;
             CharacterUIController.OnAnyCharacterUnselected += OnHeroSelectionRemoved;
         }
 
+        private void OnDestroy()
+        {
+            CharacterUIController.OnAnyCharacterSelected -= OnHeroSelectClicked;
+            CharacterUIController.OnAnyCharacterUnselected -= OnHeroSelectionRemoved;
+        }
 
         public void SetUI()
+        {
+            ClearUI();
+            
+            UnlockNewHeroIfNeeded();
+            CreateCharacters();
+            CreateDummyButtons();
+            UpdateSelectedHeroes();
+        }
+
+        private void CreateDummyButtons()
+        {
+            //Create Empty Slots
+            for (int i = _persistentDataManager.CurrentGameData.CharactersData.Count; i < GameConfig.MaxHeroCount; i++)
+            {
+                _dummyButtons.Add(Instantiate(dummyCharacterUIView, charactersUIParent));
+            }
+        }
+
+        private void CreateCharacters()
+        {
+            //Create new Characters
+            foreach (var characterData in _persistentDataManager.CurrentGameData.CharactersData)
+            {
+                var heroAttributes =
+                    ServiceLocator.Instance.DataProvideService.GetHeroAttributeWithId(characterData.Key);
+                _createdCharacters.Add(_factory.Create(characterData.Key, heroAttributes, charactersUIParent));
+            }
+        }
+
+        private void UnlockNewHeroIfNeeded()
+        {
+            //Unlock new hero if needed
+            if (ServiceLocator.Instance.CharacterUnlockLogicService.IsNewCharacterUnlock())
+            {
+                var alreadyUnlockedCharacterIds =
+                    _persistentDataManager.GetCharactersData().Keys.ToList();
+
+                var nextUnlockedHero =
+                    ServiceLocator.Instance.DataProvideService.GetRandomHeroWithoutThisIds(alreadyUnlockedCharacterIds);
+
+                _persistentDataManager.OnCharacterUnlocked(nextUnlockedHero.ID);
+            }
+        }
+
+        private void ClearUI()
         {
             //Clear
             if (_createdCharacters != null)
@@ -52,54 +105,10 @@ namespace Character
 
             _dummyButtons = new List<GameObject>();
             _createdCharacters = new List<CharacterController>();
-            
-            if (IsUnlockANewCharacter())
-            {
-                var alreadyUnlockedCharacterIds =
-                    _playerPrefsPersistentDataManager.CurrentGameData.CharacterData.Keys.ToList();
-                var nextUnlockedHero = ServiceLocator.Instance.DataProvideService.GetRandomHeroWithoutThisIds(alreadyUnlockedCharacterIds);
-                _playerPrefsPersistentDataManager.OnCharacterUnlocked(nextUnlockedHero.ID);
-            }
-
-            //Create new Characters
-            foreach (var characterData in _playerPrefsPersistentDataManager.CurrentGameData.CharacterData)
-            {
-                var heroAttributes =
-                    ServiceLocator.Instance.DataProvideService.GetHeroAttributeWithId(characterData.Key);
-                _createdCharacters.Add(_uiViewFactory.Create(characterData.Key, heroAttributes, charactersUIParent));       
-            }
-            
-            //Create Empty Buttons
-            for (int i = _playerPrefsPersistentDataManager.CurrentGameData.CharacterData.Count; i < 10; i++)
-            {
-                _dummyButtons.Add(Instantiate(DummyCharacterUIView, charactersUIParent));
-            }
-
-            UpdateSelectedHeroes();
         }
-
-        private bool IsUnlockANewCharacter()
-        {
-            var currentUnlockedHeroCount = _playerPrefsPersistentDataManager.CurrentGameData.CharacterData.Count;
-            if (currentUnlockedHeroCount >= 10)
-                return false;
-
-            var neededUnlockedHeroCount = 3 + Mathf.FloorToInt(_playerPrefsPersistentDataManager.CurrentGameData.totalMatchCount / 1f);
-            return currentUnlockedHeroCount < neededUnlockedHeroCount;
-        }
-
-        private void OnDestroy()
-        {
-            CharacterUIController.OnAnyCharacerSelected -= OnHeroSelectClicked;
-            CharacterUIController.OnAnyCharacterUnselected -= OnHeroSelectionRemoved;
-        }
-
+        
         private void OnHeroSelectionRemoved(int id)
         {
-            if (_playerPrefsPersistentDataManager.CurrentGameData.selectedHeroes.Count == 3)
-            {
-                return;
-            }
             UpdateSelectedHeroes();
         }
         
@@ -115,17 +124,8 @@ namespace Character
 
         private void UpdateBattleButtonActivity()
         {
-            //TODO : take this to its own class for Button and the magic
-            //number needs to be come from the config class
-            BattleStartButton.interactable =
-                _playerPrefsPersistentDataManager.CurrentGameData.selectedHeroes.Count == 3;
-        }
-
-        private void OnBattleStarted()
-        {
-            //CREATE NEW BATTLE DATA
-            transform.gameObject.SetActive(false);
-            _gameInitializer.SetBattle();
+            battleStartButton.interactable =
+                _persistentDataManager.CurrentGameData.selectedHeroes.Count == GameConfig.RequiredHeroCountForBattle;
         }
 
     }

@@ -1,13 +1,12 @@
-﻿using System.Runtime.Serialization;
-using DefaultNamespace;
-using DefaultNamespace.Health;
+﻿using HitPoint;
 using Level;
-using UnityEngine;
+using PersistentData;
 
-namespace Character
+namespace Character.Base
 {
     public class UnitModelBase
     {
+        protected readonly PersistantDataManager PersistentDataManager;
         private int _attackPower;
         public int Id { get; }
 
@@ -24,18 +23,21 @@ namespace Character
 
         public CharacterAttributes Attributes { get; }
 
-        protected UnitModelBase(int id, int level, int xp, CharacterAttributes attributes)
+        protected UnitModelBase(int id, int level, int xp, 
+            CharacterAttributes attributes,
+            PersistantDataManager persistentDataManager)
         {
+            PersistentDataManager = persistentDataManager;
             Id = id;
             _levelData = new LevelData(xp, level);
-            this.Attributes = attributes;
+            Attributes = attributes;
+            hp = new Health(level, attributes.BaseHealth);
             CalculateAttackPower();
         }
 
-
         private void CalculateAttackPower()
         {
-            _attackPower = ServiceLocator.Instance.AttackIncreaseLogicService
+            _attackPower = ServiceLocator.Instance.AttackPowerLogicService
                 .GetAttackValue(Attributes.BaseAttackPower, _levelData.Level);
         }
         

@@ -1,7 +1,9 @@
 ﻿using System;
 using Character;
+using Character.Base;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace InfoPopupController
 {
@@ -13,6 +15,18 @@ namespace InfoPopupController
         [SerializeField] private TextMeshProUGUI txt_level;
         
         [SerializeField] private RectTransform infoPopup;
+        
+        [SerializeField] private Button closeButton;
+
+        private void Awake()
+        {
+            closeButton.onClick.AddListener(Hide);
+        }
+
+        private void OnDestroy()
+        {
+            closeButton.onClick.RemoveAllListeners();
+        }
 
         public void SetData(UnitModelBase infoPopupData, Vector2 screenPosition)
         {

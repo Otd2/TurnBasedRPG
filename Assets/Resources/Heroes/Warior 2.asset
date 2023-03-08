@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   attributes:
-    isEnemy: 0
-    name: Warior
-    sprite: {fileID: 21300000, guid: 995241d8471f2b3419868f01ff0563d7, type: 3}
+    name: Eadric of Fenwood
+    sprite: {fileID: 21300000, guid: bdbc595883809be40a0affae58f21073, type: 3}
     baseHealth: 100
-    baseAttackPower: 40
-    skillSet: 00000000
+    baseAttackPower: 20
+    attackType: 0

@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
 using Character;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
-public interface IDataProvideService
+namespace CharactersDataProvider
 {
-    public Action LoadCompletedEvent { get; }
-    public void Load();
-    public CharacterAttributes GetHeroAttributeWithId(int id);
-    public CharacterAttributes GetEnemyAttributeWithId(int id);
-    public CharacterAttributesSO GetRandomHeroWithoutThisIds(List<int> ids);
-    public CharacterAttributesSO GetRandomHero();
-    public CharacterAttributesSO GetRandomEnemy();
+    //This can be extendable to Addressable, cloud etc.
+    public interface IDataProvideService
+    {
+        public Action LoadCompletedEvent { get; }
+        public void Load();
+        public CharacterAttributes GetHeroAttributeWithId(int id);
+        public CharacterAttributes GetEnemyAttributeWithId(int id);
+        public CharacterAttributesSo GetRandomHeroWithoutThisIds(List<int> ids);
+        public CharacterAttributesSo GetRandomHero();
+        public CharacterAttributesSo GetRandomEnemy();
+    }
 }

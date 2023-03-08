@@ -1,43 +1,38 @@
 ﻿using Character;
+using Character.Battle.Controller;
+using Character.Battle.View;
 using DefaultNamespace.Target;
 using DG.Tweening;
-using UnityEngine;
 
-namespace DefaultNamespace.Attack
+namespace Attack
 {
     public class MeleeTargetedAttack : AttackBase
     {
-        private readonly Transform _source;
         private readonly ITarget _target;
-        private readonly float _delay;
-        private readonly float _animTime;
 
-        public MeleeTargetedAttack(Transform source, ITarget target,  float delay, float animTime) 
+        public MeleeTargetedAttack(BattleUnitView source, float delay, float animTime, ITarget target,
+            IAttackListener attackListener) 
+            : base(source, delay, animTime, attackListener)
         {
-            _source = source;
             _target = target;
-            _delay = delay;
-            _animTime = animTime;
         }
 
         public override void Execute(int damage)
         {
             base.Execute(damage);
-            _source.DOKill();
-            var startPosition = _source.position;
-            _source.transform.DOMove(_target.Position, _animTime/2f)
-                .SetDelay(_delay).OnComplete(
+            AttackSourceView.DOKill();
+            var startPosition = AttackSourceView.transform.position;
+            AttackSourceView.transform.DOMove(_target.Position, AnimTime/2f)
+                .SetDelay(AnimDelay).OnComplete(
                     () =>
                     {
                         ApplyDamage(damage);
-                        _source.transform.DOMove(startPosition, _animTime/2f).OnComplete(AttackEnd);
+                        AttackSourceView.transform.DOMove(startPosition, AnimTime/2f).OnComplete(AttackEnd);
                     });
         }
-        
-        
-        public override void ApplyDamage(int damage)
+
+        protected override void ApplyDamage(int damage)
         {
-            base.ApplyDamage(damage);
             _target.TakeDamage(damage);
         }
         

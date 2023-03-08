@@ -1,22 +1,23 @@
 ﻿using System;
-using Input;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public float longTouchDuration = 1.0f;
-    public Action onLongTouch;
-    public Action onTouchStarted;
-    public Action onShortTouch;
-    public bool IsInteractable;
+    public Action OnLongTouch;
+    public Action OnTouchStarted;
+    public Action OnShortTouch;
+    public bool isInteractable;
 
     private bool isTouching = false;
     private float touchTime = 0.0f;
     
     public static bool IsInteracting;
 
+    /*
     private void Update()
     {
         if (!IsInteractable)
@@ -33,12 +34,37 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
             }
         }
     }
+*/
+    async UniTask WaitForTouchRelease()
+    {
+        while (touchTime < longTouchDuration)
+        {
+            touchTime += Time.deltaTime;
+            if (!isInteractable)
+                return;
+
+            if (!isTouching)
+            {
+                OnShortTouch?.Invoke();
+                return;
+            }
+            await UniTask.Yield();
+        }
+        
+        touchTime = 0.0f;
+        OnLongTouch?.Invoke();
+        
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!isInteractable)
+            return;
+        
         touchTime = 0.0f;
         isTouching = true;
-        onTouchStarted?.Invoke();
+        OnTouchStarted?.Invoke();
+        WaitForTouchRelease();
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -47,10 +73,6 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
             return;
         
         isTouching = false;
-        
-        if(touchTime < longTouchDuration)
-            onShortTouch?.Invoke();
-        
         touchTime = 0.0f;
     }
 }

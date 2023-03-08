@@ -1,5 +1,7 @@
+using Attack;
+using CharactersDataProvider;
 using DefaultNamespace;
-using DefaultNamespace.Attack;
+using HitPoint;
 using InfoPopupController;
 using Level;
 using UnityEngine;
@@ -12,9 +14,10 @@ public class ServiceLocator : MonoBehaviour
     
     public IReward EndGameReward;
     public IHealthLogicService HealthLogicService;
-    public IAttackIncreaseLogicService AttackIncreaseLogicService;
+    public IAttackPowerLogicService AttackPowerLogicService;
     public IDataProvideService DataProvideService;
     public ILevelUpLogicService LevelUpLogicService;
+    public ICharacterUnlockLogicService CharacterUnlockLogicService;
 
     private void Awake()
     {
@@ -24,9 +27,5 @@ public class ServiceLocator : MonoBehaviour
             return;
         }
         Instance = this;
-        
     }
-    
-    
-    
 }

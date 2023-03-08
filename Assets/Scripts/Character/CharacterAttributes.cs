@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DefaultNamespace.Attack;
+using Attack;
 using UnityEngine;
 
 namespace Character
@@ -12,13 +12,13 @@ namespace Character
         [SerializeField] private Sprite sprite;
         [SerializeField] private int baseHealth;
         [SerializeField] private int baseAttackPower;
-        [SerializeField] private List<AttackType> skillSet;
+        [SerializeField] private AttackType attackType;
 
         public string Name => name;
         public Sprite Sprite => sprite;
         public int BaseHealth => baseHealth;
         public int BaseAttackPower => baseAttackPower;
-        public List<AttackType> SkillSet => skillSet;
+        public AttackType AttackType => attackType;
 
     }
     

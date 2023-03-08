@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 10
   attributes:
-    isEnemy: 0
-    name: Warior
-    sprite: {fileID: 21300000, guid: 995241d8471f2b3419868f01ff0563d7, type: 3}
-    baseHealth: 100
-    baseAttackPower: 40
-    skillSet: 00000000
+    name: Gwendolyn
+    sprite: {fileID: 21300000, guid: c50ddafdf769b4240818b82f023df5c1, type: 3}
+    baseHealth: 170
+    baseAttackPower: 30
+    attackType: 0

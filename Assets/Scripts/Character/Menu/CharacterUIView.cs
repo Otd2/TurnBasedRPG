@@ -1,4 +1,6 @@
 ﻿using System;
+using Character.Base;
+using Character.Menu;
 using Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,14 +11,15 @@ namespace Character
     {
         [SerializeField] private Image characterSprite;
         [SerializeField] private Image frame;
-        private InteractionManager interactionManager;
+        private InteractionManager _interactionManager;
 
         private void Awake()
         {
-            interactionManager =
+            _interactionManager =
                 new InteractionManager();
             
-            interactionManager.AssignLongTouchDetector(gameObject, OnLongTouch, OnShortTouch, OnTouchStarted);
+            _interactionManager.AssignLongTouchDetector(gameObject, OnLongTouch, OnShortTouch, OnTouchStarted);
+            _interactionManager.SetInteractable(true);
         }
 
         public void SetFrameActive(bool isActive)
@@ -28,25 +31,19 @@ namespace Character
         {
             characterSprite.sprite = sprite;
         }
-
-        public void SetUnlocked(bool modelUnlocked)
-        {
-            characterSprite.color = modelUnlocked ? Color.white : Color.grey;
-            interactionManager.SetInteractable(modelUnlocked);
-        }
-
+        
         private void OnTouchStarted()
         {
         }
 
         private void OnLongTouch()
         {
-            ((CharacterUIController)_controller).ShowInfoPopup();
+            ((CharacterUIController)Controller).ShowInfoPopup();
         }
 
         private void OnShortTouch()
         {
-            ((CharacterUIController)_controller).OnClickedHero();
+            ((CharacterUIController)Controller).OnClickedHero();
         }
     }
 }

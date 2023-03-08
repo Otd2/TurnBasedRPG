@@ -1,14 +1,10 @@
-﻿using DefaultNamespace;
-
-namespace Character
+﻿namespace Character.Base
 {
     public abstract class CharacterController
     {
-        protected PlayerPrefsPersistentDataManager PlayerPrefsPersistentDataManager;
 
-        protected CharacterController(UnitView view, UnitModelBase model, PlayerPrefsPersistentDataManager playerPrefsPersistentDataManager)
+        protected CharacterController(UnitView view, UnitModelBase model)
         {
-            PlayerPrefsPersistentDataManager = playerPrefsPersistentDataManager;
         }
 
         protected abstract void AssignView(UnitView view);

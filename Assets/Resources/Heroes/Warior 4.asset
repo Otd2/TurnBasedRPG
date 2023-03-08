@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   attributes:
-    isEnemy: 0
-    name: Warior
-    sprite: {fileID: 21300000, guid: 995241d8471f2b3419868f01ff0563d7, type: 3}
-    baseHealth: 100
-    baseAttackPower: 40
-    skillSet: 00000000
+    name: Wilfred
+    sprite: {fileID: 21300000, guid: 1fbb713ebd1d38242bb9ff8b33cb0bce, type: 3}
+    baseHealth: 90
+    baseAttackPower: 45
+    attackType: 0

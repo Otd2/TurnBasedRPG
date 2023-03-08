@@ -1,4 +1,5 @@
 ﻿using Character;
+using Character.Base;
 using UnityEngine;
 
 namespace InfoPopupController

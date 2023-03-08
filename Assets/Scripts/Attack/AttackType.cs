@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace.Attack
+﻿namespace Attack
 {
     public enum AttackType
     {

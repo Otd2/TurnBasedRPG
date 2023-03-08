@@ -1,23 +1,25 @@
-﻿using DefaultNamespace.Health;
+﻿using Character.Base;
+using PersistentData;
 
-namespace Character
+namespace Character.Battle.Model
 {
-    public class UnitBattleModel : UnitModelBase
+    public class UnitBattleModel : UnitModelBase 
     {
-        public bool _isDead;
+        public bool IsDead => hp.GetHp() <= 0;
+        public bool IsUnitsTurn { get; set; }
 
-        public UnitBattleModel(int id, int level, int xp, 
-            CharacterAttributes attributes, int currentHp) :
-            base(id, level, xp, attributes)
+        protected UnitBattleModel(int id, int level, int xp, 
+            CharacterAttributes attributes,
+            PersistantDataManager persistentDataManager) :
+            base(id, level, xp, attributes, persistentDataManager)
         {
-            hp = new DynamicHealth(level, attributes.BaseHealth);
-            ((DynamicHealth)hp).HealthChange(currentHp);
+            //update persistent data when health changed
+            hp.OnHealthChanged += OnHealthChanged;
         }
         
-        public void RewardEarned()
+        protected virtual void OnHealthChanged(int newhealth)
         {
-            LevelDataLogic.AddXp(ServiceLocator.Instance.EndGameReward.GetRewardedExp());
-            
+            PersistentDataManager.OnCharacterHPChanged(Id, newhealth);
         }
     }
 }

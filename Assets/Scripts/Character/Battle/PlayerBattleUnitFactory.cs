@@ -1,28 +1,35 @@
-﻿using DefaultNamespace;
+﻿using BattleStates.StateMachine;
+using Character.Base;
+using Character.Battle.Controller;
+using Character.Battle.View;
+using DefaultNamespace;
+using PersistentData;
 using UnityEngine;
+using CharacterController = Character.Base.CharacterController;
 
-namespace Character
+namespace Character.Battle
 {
     public class PlayerBattleUnitFactory : AbstractCharacterFactory
     {
-        private readonly ITurnManager _turnManager;
+        private readonly IBattleStateMachine _battleStateMachine;
 
-        public PlayerBattleUnitFactory(UnitView unitPrefab, PlayerPrefsPersistentDataManager playerPrefsPersistentDataManager, ITurnManager turnManager) : 
-            base(unitPrefab, playerPrefsPersistentDataManager)
+        public PlayerBattleUnitFactory(UnitView unitPrefab, PersistantDataManager persistentDataManager, IBattleStateMachine battleStateMachine) : 
+            base(unitPrefab, persistentDataManager)
         {
-            _turnManager = turnManager;
+            _battleStateMachine = battleStateMachine;
         }
 
         public override CharacterController Create(int characterId, CharacterAttributes characterAttributes, Transform parent)
         {
-            CharacterData data = _playerPrefsPersistentDataManager.GetCharacterData(characterId);
-            
-            var battleModel = new UnitBattleModel(characterId, data.Lvl, data.Exp, characterAttributes, 
-                    _playerPrefsPersistentDataManager.CurrentGameData.BattleData.CharactersWithHP[characterId]);
-            
+            //Get saved data
+            CharacterData data = PersistentDataManager.GetCharacterData(characterId);
+            //Create model
+            var battleModel = new HeroBattleModel(characterId, data.Lvl, data.Exp, characterAttributes, PersistentDataManager);
+            //Create view
             var view = Object.Instantiate(UnitPrefab, parent);
             view.transform.localPosition = Vector3.zero;
-            return new HeroBattleController((BattleUnitView)view, battleModel, _playerPrefsPersistentDataManager, _turnManager);
+            //return controller
+            return new HeroBattleController((BattleUnitView)view, battleModel, _battleStateMachine);
         }
     
     }
