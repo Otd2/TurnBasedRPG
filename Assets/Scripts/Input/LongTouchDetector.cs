@@ -12,18 +12,18 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
     public Action OnShortTouch;
     public bool isInteractable;
 
-    private bool isTouching = false;
-    private float touchTime = 0.0f;
+    private bool _isTouching = false;
+    private float _touchTime = 0.0f;
     
     async UniTask WaitForTouchRelease()
     {
-        while (touchTime < longTouchDuration)
+        while (_touchTime < longTouchDuration)
         {
-            touchTime += Time.deltaTime;
+            _touchTime += Time.deltaTime;
             if (!isInteractable)
                 return;
 
-            if (!isTouching)
+            if (!_isTouching)
             {
                 OnShortTouch?.Invoke();
                 return;
@@ -31,7 +31,7 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
             await UniTask.Yield();
         }
         
-        touchTime = 0.0f;
+        _touchTime = 0.0f;
         OnLongTouch?.Invoke();
     }
 
@@ -40,18 +40,18 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
         if (!isInteractable)
             return;
         
-        touchTime = 0.0f;
-        isTouching = true;
+        _touchTime = 0.0f;
+        _isTouching = true;
         OnTouchStarted?.Invoke();
         WaitForTouchRelease();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!isTouching)
+        if (!_isTouching)
             return;
         
-        isTouching = false;
-        touchTime = 0.0f;
+        _isTouching = false;
+        _touchTime = 0.0f;
     }
 }

@@ -7,7 +7,7 @@ using Level;
 using PersistentData;
 using UnityEngine;
 
-public class GameInitializer : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     [SerializeField] private CharacterSelectingUI characterSelectingUI;
     [SerializeField] private BattleBoardController battleBoardController;
@@ -30,10 +30,9 @@ public class GameInitializer : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    void OnApplicationPause(bool isPause)
+    void OnApplicationQuit()
     {
-        if(true)
-            _persistantDataManager.Save();
+        _persistantDataManager.Save();
     }
 #elif UNITY_ANDROID
     void OnApplicationPause(bool isPause)
