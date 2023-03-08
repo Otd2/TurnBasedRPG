@@ -15,26 +15,6 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
     private bool isTouching = false;
     private float touchTime = 0.0f;
     
-    public static bool IsInteracting;
-
-    /*
-    private void Update()
-    {
-        if (!IsInteractable)
-            return;
-        
-        if (isTouching)
-        {
-            touchTime += Time.deltaTime;
-
-            if (touchTime >= longTouchDuration)
-            {
-                onLongTouch?.Invoke();
-                isTouching = false;
-            }
-        }
-    }
-*/
     async UniTask WaitForTouchRelease()
     {
         while (touchTime < longTouchDuration)
@@ -53,7 +33,6 @@ public class LongTouchDetector : MonoBehaviour, IPointerDownHandler, IPointerUpH
         
         touchTime = 0.0f;
         OnLongTouch?.Invoke();
-        
     }
 
     public void OnPointerDown(PointerEventData eventData)

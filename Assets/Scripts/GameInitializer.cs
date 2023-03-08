@@ -29,10 +29,19 @@ public class GameInitializer : MonoBehaviour
         _persistantDataManager.Load(OnLoadCompleted);
     }
 
-    void OnApplicationQuit()
+#if UNITY_EDITOR
+    void OnApplicationPause(bool isPause)
     {
-        _persistantDataManager.Save();
+        if(true)
+            _persistantDataManager.Save();
     }
+#elif UNITY_ANDROID
+    void OnApplicationPause(bool isPause)
+    {
+        if(isPause)
+            _persistantDataManager.Save();
+    }
+#endif
 
     private void SetServices()
     {
