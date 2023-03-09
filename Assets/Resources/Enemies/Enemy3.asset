@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dab82bdf8304dd48f518d1e0207ba2c, type: 3}
-  m_Name: Warior 3
+  m_Name: Enemy3
   m_EditorClassIdentifier: 
-  id: 4
+  id: 96
   attributes:
-    name: Eldrid the Enchanter
-    sprite: {fileID: 21300000, guid: 094c5b13028c3a54e8b9e2a6c14cc0ce, type: 3}
-    baseHealth: 60
-    baseAttackPower: 40
-    attackType: 0
+    name: Enemy
+    sprite: {fileID: 21300000, guid: 58c001b4ccb6e854096bf4dcd57c4eda, type: 3}
+    baseHealth: 200
+    baseAttackPower: 25
+    attackType: 1

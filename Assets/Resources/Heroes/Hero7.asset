@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dab82bdf8304dd48f518d1e0207ba2c, type: 3}
-  m_Name: Warior 12
+  m_Name: Hero7
   m_EditorClassIdentifier: 
-  id: 97
+  id: 7
   attributes:
-    name: Enemy
-    sprite: {fileID: 21300000, guid: 90c6e2db3bc42c5499ec25407be6d483, type: 3}
-    baseHealth: 250
+    name: Isadora
+    sprite: {fileID: 21300000, guid: c51767ca9b48a3445a157ccf4da414cd, type: 3}
+    baseHealth: 120
     baseAttackPower: 30
-    attackType: 1
+    attackType: 0

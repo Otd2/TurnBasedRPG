@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dab82bdf8304dd48f518d1e0207ba2c, type: 3}
-  m_Name: Warior 2
+  m_Name: Hero8
   m_EditorClassIdentifier: 
-  id: 3
+  id: 8
   attributes:
-    name: Eadric of Fenwood
-    sprite: {fileID: 21300000, guid: bdbc595883809be40a0affae58f21073, type: 3}
-    baseHealth: 100
+    name: King
+    sprite: {fileID: 21300000, guid: f7ef9871c2c2ffe4ca29c5731b173113, type: 3}
+    baseHealth: 200
     baseAttackPower: 20
     attackType: 0

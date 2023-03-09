@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dab82bdf8304dd48f518d1e0207ba2c, type: 3}
-  m_Name: Warior 4
+  m_Name: Hero10
   m_EditorClassIdentifier: 
-  id: 5
+  id: 10
   attributes:
-    name: Wilfred
-    sprite: {fileID: 21300000, guid: 1fbb713ebd1d38242bb9ff8b33cb0bce, type: 3}
-    baseHealth: 90
-    baseAttackPower: 45
+    name: Gwendolyn
+    sprite: {fileID: 21300000, guid: c50ddafdf769b4240818b82f023df5c1, type: 3}
+    baseHealth: 170
+    baseAttackPower: 30
     attackType: 0

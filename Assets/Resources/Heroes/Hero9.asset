@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dab82bdf8304dd48f518d1e0207ba2c, type: 3}
-  m_Name: Warior 10
+  m_Name: Hero9
   m_EditorClassIdentifier: 
-  id: 99
+  id: 9
   attributes:
-    name: Enemy
-    sprite: {fileID: 21300000, guid: f8af048086424df44afb40c4d6d95d96, type: 3}
-    baseHealth: 250
-    baseAttackPower: 10
-    attackType: 1
+    name: Better Soldier
+    sprite: {fileID: 21300000, guid: 995241d8471f2b3419868f01ff0563d7, type: 3}
+    baseHealth: 150
+    baseAttackPower: 40
+    attackType: 0
