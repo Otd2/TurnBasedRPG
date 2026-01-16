@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Character;
@@ -7,21 +6,15 @@ using Random = UnityEngine.Random;
 
 namespace CharactersDataProvider
 {
-    public class LocalDataProvider : IDataProvideService
+    public class LocalDataProviderService : IDataProviderService
     {
-        public Action LoadCompletedEvent { get; }
         private CharacterAttributesSo[] _heroAttributes;
         private CharacterAttributesSo[] _enemyAttributes;
 
-        public LocalDataProvider()
-        {
-        }
-
-        public void Load()
+        public void Initialize()
         {
             _heroAttributes = Resources.LoadAll<CharacterAttributesSo>("Heroes");
             _enemyAttributes = Resources.LoadAll<CharacterAttributesSo>("Enemies");
-            LoadCompletedEvent?.Invoke();
         }
 
         public CharacterAttributes GetHeroAttributeWithId(int id)

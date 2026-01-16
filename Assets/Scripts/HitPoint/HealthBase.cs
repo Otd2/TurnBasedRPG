@@ -6,7 +6,7 @@
 
         protected HealthBase(int level, int baseHealth)
         {
-            _totalHp = ServiceLocator.Instance.HealthLogicService.GetTotalHealth(baseHealth, level);
+            _totalHp = ServiceLocator.Instance.Get<IHealthLogicService>().GetTotalHealth(baseHealth, level);
         }
 
         public virtual int GetHp()

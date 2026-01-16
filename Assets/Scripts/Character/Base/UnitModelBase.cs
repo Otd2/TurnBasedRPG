@@ -1,4 +1,5 @@
-﻿using HitPoint;
+﻿using Attack;
+using HitPoint;
 using Level;
 using PersistentData;
 
@@ -37,7 +38,7 @@ namespace Character.Base
 
         private void CalculateAttackPower()
         {
-            _attackPower = ServiceLocator.Instance.AttackPowerLogicService
+            _attackPower = ServiceLocator.Instance.Get<IAttackPowerLogicService>()
                 .GetAttackValue(Attributes.BaseAttackPower, _levelData.Level);
         }
         

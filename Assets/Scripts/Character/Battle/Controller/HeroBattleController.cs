@@ -1,10 +1,8 @@
-﻿using BattleStates;
-using BattleStates.StateMachine;
+﻿using BattleStates.StateMachine;
 using Character.Base;
 using Character.Battle.Model;
 using Character.Battle.View;
-using DefaultNamespace;
-using PersistentData;
+using Events;
 using UnityEngine;
 
 namespace Character.Battle.Controller
@@ -30,14 +28,12 @@ namespace Character.Battle.Controller
 
         public void ShowInfoPopup()
         {
-            ServiceLocator.Instance.InfoPopupController.SetData
-                (Model, Camera.current.WorldToScreenPoint(UnitView.transform.position));
+            Vector3 screenPos = Camera.current.WorldToScreenPoint(UnitView.transform.position);
+            EventBus.Publish(EventNames.ShowInfoPopup, new ShowInfoPopupEvent(Model, screenPos));
         }
 
-        public HeroBattleController(UnitView view, UnitBattleModel model,
-            IBattleStateMachine battleStateMachine) : base(view, model, battleStateMachine)
+        public HeroBattleController(UnitView view, UnitBattleModel model, IBattleStateMachine battleStateMachine) : base(view, model, battleStateMachine)
         {
         }
     }
-
 }

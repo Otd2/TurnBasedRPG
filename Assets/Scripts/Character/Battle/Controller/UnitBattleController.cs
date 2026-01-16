@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Attack;
 using BattleStates.StateMachine;
 using Character.Base;
@@ -7,18 +6,14 @@ using Character.Battle.Model;
 using Character.Battle.States;
 using Character.Battle.View;
 using DefaultNamespace.Target;
+using Events;
 using UnityEngine;
 using CharacterController = Character.Base.CharacterController;
 
 namespace Character.Battle.Controller
 {
     public class UnitBattleController : CharacterController, ITarget, IAttackListener
-    {
-        // Static event called by this class when a damage is received
-        // This is mainly listened by Floating Text but it can be used 
-        // For particles etc.
-        public static event Action<int, Vector3> OnAnyDamageReceived = 
-            delegate {  }; 
+    { 
         
         public UnitBaseState CurrentState;
         public bool IsDead => Model.IsDead;
@@ -31,8 +26,7 @@ namespace Character.Battle.Controller
         private IBattleStateMachine BattleStateMachine { get; }
         private bool _isAttacking;
 
-        protected UnitBattleController(UnitView view, UnitBattleModel model, 
-            IBattleStateMachine battleStateMachine) : base(view, model)
+        protected UnitBattleController(UnitView view, UnitBattleModel model, IBattleStateMachine battleStateMachine) : base(view, model)
         {
             Model = model;
             BattleStateMachine = battleStateMachine;
@@ -92,7 +86,7 @@ namespace Character.Battle.Controller
         public void TakeDamage(int damage)
         {
             CurrentState.SwitchState(Factory.CreateTakeDamageState(damage));
-            OnAnyDamageReceived?.Invoke(damage, Position + Vector3.up * 3);
+            EventBus.Publish(EventNames.DamageReceived, new DamageReceivedEvent(damage, Position + Vector3.up * 3));
         }
         #endregion
 

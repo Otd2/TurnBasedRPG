@@ -1,6 +1,7 @@
 ﻿using BattleStates.StateMachine;
 using Character.Base;
 using Character.Battle.Controller;
+using Character.Battle.Model;
 using Character.Battle.View;
 using DefaultNamespace;
 using PersistentData;

@@ -11,6 +11,8 @@ namespace Level
             _levelUpXp = levelUpXp;
         }
 
+        public void Initialize() { }
+
         public bool IsLevelUp(int xp, int level)
         {
             var currentLevel = 1 + Mathf.FloorToInt((float)xp / _levelUpXp);

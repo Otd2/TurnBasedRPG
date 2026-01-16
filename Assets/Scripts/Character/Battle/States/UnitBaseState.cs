@@ -8,9 +8,7 @@ namespace Character.Battle.States
         protected readonly CharacterAnimationController CharacterAnimationController;
         protected readonly UnitStateFactory Factory;
 
-        public UnitBaseState(UnitBattleController unitController,
-            CharacterAnimationController characterAnimationController,
-            UnitStateFactory factory)
+        protected UnitBaseState(UnitBattleController unitController, CharacterAnimationController characterAnimationController, UnitStateFactory factory)
         {
             UnitController = unitController;
             CharacterAnimationController = characterAnimationController;

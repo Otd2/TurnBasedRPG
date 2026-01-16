@@ -2,9 +2,9 @@
 
 namespace Attack
 {
-    public interface IAttackPowerLogicService
+    public interface IAttackPowerLogicService : IService
     {
-        public int GetAttackValue(int baseAttack, int level);
+        int GetAttackValue(int baseAttack, int level);
     }
 
     public class AttackPowerLogicService : IAttackPowerLogicService
@@ -13,11 +13,14 @@ namespace Attack
 
         public AttackPowerLogicService(int attackUpgradePercent)
         {
-            _attackUpgradeOnEachLevel = attackUpgradePercent/100f;
+            _attackUpgradeOnEachLevel = attackUpgradePercent / 100f;
         }
+
+        public void Initialize() { }
+
         public int GetAttackValue(int baseAttack, int level)
         {
-            return Mathf.FloorToInt(baseAttack * (1 + _attackUpgradeOnEachLevel * (level-1)));
+            return Mathf.FloorToInt(baseAttack * (1 + _attackUpgradeOnEachLevel * (level - 1)));
         }
     }
 }

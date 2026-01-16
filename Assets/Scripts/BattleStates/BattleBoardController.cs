@@ -4,8 +4,9 @@ using BattleStates.StateMachine;
 using Character;
 using Character.Battle;
 using Character.Battle.Controller;
+using Character.Battle.Model;
 using Character.Battle.View;
-using DefaultNamespace;
+using CharactersDataProvider;
 using DefaultNamespace.Target;
 using FloatingText;
 using PersistentData;
@@ -57,11 +58,12 @@ namespace BattleStates
         void CreateHeroes()
         {
             _playerControllers = new List<UnitBattleController>();
+            var dataProvider = ServiceLocator.Instance.Get<IDataProviderService>();
             for (var index = 0; index < boardPositions.Length; index++)
             {
                 var boardPosition = boardPositions[index];
                 var id = _persistentDataManager.CurrentGameData.selectedHeroes[index];
-                var characterAttributes = ServiceLocator.Instance.DataProvideService.GetHeroAttributeWithId(id);
+                var characterAttributes = dataProvider.GetHeroAttributeWithId(id);
                 var playerController =
                     (HeroBattleController)_battleUnitFactory.Create(id, characterAttributes, boardPosition);
                 _playerControllers.Add(playerController);
@@ -75,7 +77,7 @@ namespace BattleStates
             var enemyId = _persistentDataManager.CurrentGameData.BattleData.enemyId;
         
             //model
-            var enemyModel = new EnemyBattleModel(enemyId, 1, 0, ServiceLocator.Instance.DataProvideService.GetEnemyAttributeWithId(enemyId), 
+            var enemyModel = new EnemyBattleModel(enemyId, 1, 0, ServiceLocator.Instance.Get<IDataProviderService>().GetEnemyAttributeWithId(enemyId), 
                 _persistentDataManager);
         
             //view

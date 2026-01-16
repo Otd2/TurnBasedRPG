@@ -1,7 +1,6 @@
 ﻿using Character.Battle.Controller;
-using Character.Battle.States;
 
-namespace Character
+namespace Character.Battle.States
 {
     public class UnitTakeDamageState : UnitBaseState
     {

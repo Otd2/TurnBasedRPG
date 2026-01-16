@@ -1,6 +1,8 @@
 using Attack;
 using BattleStates;
 using Character;
+using Character.Interfaces;
+using Character.Services;
 using CharactersDataProvider;
 using HitPoint;
 using Level;
@@ -18,8 +20,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _persistantDataManager = new PlayerPrefsPersistentDataManager();
-        SetServices();
-        ServiceLocator.Instance.DataProvideService.Load();
+        RegisterServices();
         
         _battleDataCreator = new BattleDataCreator(_persistantDataManager);
         
@@ -42,20 +43,20 @@ public class GameManager : MonoBehaviour
     }
 #endif
 
-    private void SetServices()
+    private void RegisterServices()
     {
-        ServiceLocator.Instance.DataProvideService = new LocalDataProvider();
-        ServiceLocator.Instance.EndGameReward = new OnlyExpReward(1);
-        ServiceLocator.Instance.HealthLogicService = new HealthLogicService(GameConfig.HealthIncreasePercentOnEachLevel);
-        ServiceLocator.Instance.AttackPowerLogicService = new AttackPowerLogicService(GameConfig.AttackIncreasePercentOnEachLevel);
-        ServiceLocator.Instance.LevelUpLogicService = new LevelUpLogicService(GameConfig.LevelUpOnEachXp);
-        ServiceLocator.Instance.CharacterUnlockLogicService = new CharacterUnlockWithBattleCount
-            (GameConfig.CharacterUnlockAfterBattle, _persistantDataManager);
+        ServiceLocator.Instance.Register<IDataProviderService>(new LocalDataProviderService());
+        ServiceLocator.Instance.Register<IRewardService>(new ExpRewardService(1));
+        ServiceLocator.Instance.Register<IHealthLogicService>(new HealthLogicService(GameConfig.HealthIncreasePercentOnEachLevel));
+        ServiceLocator.Instance.Register<IAttackPowerLogicService>(new AttackPowerLogicService(GameConfig.AttackIncreasePercentOnEachLevel));
+        ServiceLocator.Instance.Register<ILevelUpLogicService>(new LevelUpLogicService(GameConfig.LevelUpOnEachXp));
+        ServiceLocator.Instance.Register<ICharacterUnlockLogicService>(new CharacterUnlockService(GameConfig.CharacterUnlockAfterBattle, _persistantDataManager));
+        
+        ServiceLocator.Instance.Lock();
     }
 
     private void OnLoadCompleted()
     {
-        //Check if battle is on 
         if(_persistantDataManager.IsBattleOn())
             SetBattle();
         else

@@ -1,7 +1,7 @@
 ﻿namespace Level
 {
-    public interface ILevelUpLogicService
+    public interface ILevelUpLogicService : IService
     {
-        public bool IsLevelUp(int xp, int level);
+        bool IsLevelUp(int xp, int level);
     }
 }

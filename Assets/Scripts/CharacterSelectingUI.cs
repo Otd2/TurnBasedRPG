@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using DefaultNamespace;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Character.Interfaces;
 using Character.Menu;
-using MiscUtil.Collections.Extensions;
+using CharactersDataProvider;
+using Events;
+using Events.Interfaces;
 using PersistentData;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using CharacterController = Character.Base.CharacterController;
@@ -32,14 +33,14 @@ namespace Character
             _factory =
                 new MenuCharacterFactory(characterUiView, persistentDataManager);
             
-            CharacterUIController.OnAnyCharacterSelected += OnHeroSelectClicked;
-            CharacterUIController.OnAnyCharacterUnselected += OnHeroSelectionRemoved;
+            EventBus.Subscribe(EventNames.CharacterSelected, OnHeroSelectClicked);
+            EventBus.Subscribe(EventNames.CharacterUnselected, OnHeroSelectionRemoved);
         }
 
         private void OnDestroy()
         {
-            CharacterUIController.OnAnyCharacterSelected -= OnHeroSelectClicked;
-            CharacterUIController.OnAnyCharacterUnselected -= OnHeroSelectionRemoved;
+            EventBus.Unsubscribe(EventNames.CharacterSelected, OnHeroSelectClicked);
+            EventBus.Unsubscribe(EventNames.CharacterUnselected, OnHeroSelectionRemoved);
         }
 
         public void SetUI()
@@ -64,10 +65,10 @@ namespace Character
         private void CreateCharacters()
         {
             //Create new Characters
+            var dataProvider = ServiceLocator.Instance.Get<IDataProviderService>();
             foreach (var characterData in _persistentDataManager.CurrentGameData.CharactersData)
             {
-                var heroAttributes =
-                    ServiceLocator.Instance.DataProvideService.GetHeroAttributeWithId(characterData.Key);
+                var heroAttributes = dataProvider.GetHeroAttributeWithId(characterData.Key);
                 _createdCharacters.Add(_factory.Create(characterData.Key, heroAttributes, charactersUIParent));
             }
         }
@@ -75,13 +76,13 @@ namespace Character
         private void UnlockNewHeroIfNeeded()
         {
             //Unlock new hero if needed
-            if (ServiceLocator.Instance.CharacterUnlockLogicService.IsNewCharacterUnlock())
+            if (ServiceLocator.Instance.Get<ICharacterUnlockLogicService>().IsNewCharacterUnlock())
             {
                 var alreadyUnlockedCharacterIds =
                     _persistentDataManager.GetCharactersData().Keys.ToList();
 
                 var nextUnlockedHero =
-                    ServiceLocator.Instance.DataProvideService.GetRandomHeroWithoutThisIds(alreadyUnlockedCharacterIds);
+                    ServiceLocator.Instance.Get<IDataProviderService>().GetRandomHeroWithoutThisIds(alreadyUnlockedCharacterIds);
 
                 _persistentDataManager.OnCharacterUnlocked(nextUnlockedHero.ID);
             }
@@ -107,12 +108,12 @@ namespace Character
             _createdCharacters = new List<CharacterController>();
         }
         
-        private void OnHeroSelectionRemoved(int id)
+        private void OnHeroSelectionRemoved(IEvent evt)
         {
             UpdateSelectedHeroes();
         }
         
-        private void OnHeroSelectClicked(int id)
+        private void OnHeroSelectClicked(IEvent evt)
         {
             UpdateSelectedHeroes();
         }

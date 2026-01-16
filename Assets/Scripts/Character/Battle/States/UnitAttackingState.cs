@@ -15,9 +15,7 @@ namespace Character.Battle.States
         {
         }
 
-        public UnitAttackingState(UnitBattleController unitController, 
-            CharacterAnimationController characterAnimationController, UnitStateFactory factory) :
-            base(unitController, characterAnimationController, factory)
+        public UnitAttackingState(UnitBattleController unitController, CharacterAnimationController characterAnimationController, UnitStateFactory factory) : base(unitController, characterAnimationController, factory)
         {
         }
     }

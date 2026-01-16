@@ -1,6 +1,6 @@
-﻿using System;
-using Character.Battle.Controller;
-using DG.Tweening;
+﻿using DG.Tweening;
+using Events;
+using Events.Interfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -58,17 +58,18 @@ namespace FloatingText
 
         private void OnEnable()
         {
-            //Listens if any damage received to any type of unit
-            UnitBattleController.OnAnyDamageReceived += OnAnyDamageReceived;
+            EventBus.Subscribe(EventNames.DamageReceived, OnDamageReceived);
         }
+        
         private void OnDisable()
         {
-            UnitBattleController.OnAnyDamageReceived -= OnAnyDamageReceived;
+            EventBus.Unsubscribe(EventNames.DamageReceived, OnDamageReceived);
         }
 
-        private void OnAnyDamageReceived(int damage, Vector3 pos)
+        private void OnDamageReceived(IEvent evt)
         {
-            ScoreEffect(pos, damage);
+            var data = (DamageReceivedEvent)evt;
+            ScoreEffect(data.Position, data.Damage);
         }
 
         TextMeshPro CreatePooledItem()

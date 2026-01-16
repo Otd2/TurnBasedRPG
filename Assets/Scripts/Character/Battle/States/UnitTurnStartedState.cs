@@ -1,5 +1,4 @@
 ﻿using Character.Battle.Controller;
-using UnityEngine;
 
 namespace Character.Battle.States
 {

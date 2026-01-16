@@ -1,10 +1,8 @@
 ﻿using Character.Battle.Controller;
-using Character.Battle.States;
-using UnityEngine;
 
-namespace Character
+namespace Character.Battle.States
 {
-    public class UnitTurnEndedState: UnitBaseState
+    public class UnitTurnEndedState : UnitBaseState
     {
         public override void EnterState()
         {

@@ -1,7 +1,6 @@
-﻿using Character.Battle.Model;
-using PersistentData;
+﻿using PersistentData;
 
-namespace Character
+namespace Character.Battle.Model
 {
     public class EnemyBattleModel : UnitBattleModel 
     {

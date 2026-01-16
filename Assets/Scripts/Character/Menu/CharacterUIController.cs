@@ -1,13 +1,10 @@
-﻿using System;
-using Character.Base;
+﻿using Character.Base;
+using Events;
 
 namespace Character.Menu
 {
     public class CharacterUIController : CharacterController
     {
-        public static event Action<int> OnAnyCharacterSelected = delegate(int id) {  }; 
-        public static event Action<int> OnAnyCharacterUnselected = delegate(int id) {  }; 
-        
         private readonly UnitUIModel _model;
         private CharacterUIView _view;
         
@@ -24,10 +21,10 @@ namespace Character.Menu
             _view.SetFrameActive(_model.IsSelected);
             _view.SetSprite(_model.Attributes.Sprite);
         } 
+
         public void ShowInfoPopup()
         {
-            ServiceLocator.Instance.InfoPopupController.SetData
-                (_model, _view.transform.position);
+            EventBus.Publish(EventNames.ShowInfoPopup, new ShowInfoPopupEvent(_model, _view.transform.position));
         }
 
         public void OnClickedHero()
@@ -55,14 +52,8 @@ namespace Character.Menu
 
         private void NotifySelectionChange()
         {
-            if (_model.IsSelected)
-            {
-                OnAnyCharacterSelected.Invoke(_model.Id);
-            }
-            else
-            {
-                OnAnyCharacterUnselected.Invoke(_model.Id);
-            }
+            var eventName = _model.IsSelected ? EventNames.CharacterSelected : EventNames.CharacterUnselected;
+            EventBus.Publish(eventName, new CharacterSelectionEvent(_model.Id));
         }
 
         public override void Destroy()

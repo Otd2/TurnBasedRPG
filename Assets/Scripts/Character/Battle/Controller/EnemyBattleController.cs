@@ -2,8 +2,6 @@
 using Character.Base;
 using Character.Battle.Model;
 using Character.Battle.View;
-using PersistentData;
-using UnityEngine;
 
 namespace Character.Battle.Controller
 {

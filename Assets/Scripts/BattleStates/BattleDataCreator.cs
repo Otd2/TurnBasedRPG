@@ -1,4 +1,5 @@
-﻿using DefaultNamespace;
+﻿using CharactersDataProvider;
+using HitPoint;
 using PersistentData;
 
 namespace BattleStates
@@ -14,7 +15,7 @@ namespace BattleStates
 
         public void CreateNewBattleData()
         {
-            var dataProvider = ServiceLocator.Instance.DataProvideService;
+            var dataProvider = ServiceLocator.Instance.Get<IDataProviderService>();
             BattleData battleData = new BattleData();
             battleData.CharactersWithHP = new BattleCharacterDictionary();
             
@@ -22,7 +23,7 @@ namespace BattleStates
             {
                 var characterData = _dataManager.GetCharacterData(selectedHero);
                 var characterAttributes = dataProvider.GetHeroAttributeWithId(selectedHero);
-                var totalHealth = ServiceLocator.Instance.HealthLogicService.GetTotalHealth(characterAttributes.BaseHealth, characterData.Lvl);
+                var totalHealth = ServiceLocator.Instance.Get<IHealthLogicService>().GetTotalHealth(characterAttributes.BaseHealth, characterData.Lvl);
                 battleData.CharactersWithHP.Add(selectedHero, totalHealth);
             }
 
