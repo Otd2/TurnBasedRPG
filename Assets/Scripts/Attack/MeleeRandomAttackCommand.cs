@@ -1,37 +1,35 @@
-﻿using System.Collections.Generic;
-using Character;
-using Character.Battle.Controller;
+using System;
+using System.Collections.Generic;
 using Character.Battle.View;
 using DefaultNamespace.Target;
 using DG.Tweening;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Attack
 {
-    public class MeleeRandomAttack : AttackBase
+    public class MeleeRandomAttackCommand : AttackCommandBase
     {
         private readonly List<ITarget> _possibleTargets;
         private ITarget _target;
 
-        public MeleeRandomAttack(BattleUnitView source, float delay, float animTime, List<ITarget> possibleTargets,
-            IAttackListener attackListener) 
-            : base(source, delay, animTime, attackListener)
+        public MeleeRandomAttackCommand(BattleUnitView source, float delay, float animTime, List<ITarget> possibleTargets, int damage, Action onStarted, Action onEnded) : base(source, delay, animTime, damage, onStarted, onEnded)
         {
             _possibleTargets = possibleTargets;
         }
 
-        public override void Execute(int damage) 
+        public override void Execute() 
         {
-            base.Execute(damage);
+            base.Execute();
             _target = SelectRandomTarget();
             var startPosition = AttackSourceView.transform.position;
             AttackSourceView.DOKill();
-            AttackSourceView.transform.DOMove(_target.Position, AnimTime/2f)
+            float halfAnimTime = TotalAnimTime * 0.5f;
+            AttackSourceView.transform.DOMove(_target.Position, halfAnimTime)
                 .SetDelay(AnimDelay).OnComplete(
                     () =>
                     {
-                        ApplyDamage(damage);
-                        AttackSourceView.transform.DOMove(startPosition, AnimTime/2f).OnComplete(AttackEnd);
+                        ApplyDamage();
+                        AttackSourceView.transform.DOMove(startPosition, halfAnimTime).OnComplete(AttackEnd);
                     });
         }
 
@@ -41,9 +39,9 @@ namespace Attack
             return _possibleTargets[randIndex].IsDead ? SelectRandomTarget() : _possibleTargets[randIndex];
         }
 
-        protected override void ApplyDamage(int damage)
+        protected override void ApplyDamage()
         {
-            _target.TakeDamage(damage);
+            _target.TakeDamage(Damage);
         }
     }
 }

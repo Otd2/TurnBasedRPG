@@ -7,7 +7,7 @@ namespace Character.Battle.States
     {
         public override void EnterState()
         {
-            UnitController.AttackStrategy.Execute(UnitController.Model.AttackPower);
+            UnitController.AttackCommand.Execute();
             CharacterAnimationController.PlayAnimation("Attack");
         }
 

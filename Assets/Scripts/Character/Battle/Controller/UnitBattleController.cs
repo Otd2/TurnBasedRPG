@@ -12,12 +12,12 @@ using CharacterController = Character.Base.CharacterController;
 
 namespace Character.Battle.Controller
 {
-    public class UnitBattleController : CharacterController, ITarget, IAttackListener
+    public class UnitBattleController : CharacterController, ITarget
     { 
         
         public UnitBaseState CurrentState;
         public bool IsDead => Model.IsDead;
-        public AttackBase AttackStrategy { get; private set; }
+        public AttackCommandBase AttackCommand { get; private set; }
         public Vector3 Position => UnitView.GetAttackPosition();
         public UnitBattleModel Model { get; }
         
@@ -48,11 +48,23 @@ namespace Character.Battle.Controller
             UnitView.ConnectHpBar(Model.Hp);
         }
         
+        private List<ITarget> _targets;
+        
         public void SetTargets(List<ITarget> targets)
         {
-            //Create attack strategy with attack type and targets
-            AttackStrategy = AttackFactory.GetAttackStrategy
-                (UnitView, Model.Attributes.AttackType, targets, this);
+            _targets = targets;
+        }
+        
+        private void CreateAttackCommand()
+        {
+            AttackCommand = AttackCommandFactory.Create(
+                UnitView, 
+                Model.Attributes.AttackType, 
+                _targets,
+                Model.AttackPower,
+                onStarted: OnAttackStarted,
+                onEnded: OnAttackEnded
+            );
         }
 
         public override void Destroy()
@@ -78,6 +90,7 @@ namespace Character.Battle.Controller
             if (Model.IsUnitsTurn && !Model.IsDead)
             {
                 _isAttacking = true;
+                CreateAttackCommand();
                 CurrentState.SwitchState(Factory.AttackingSate);
             }
         }
@@ -88,27 +101,17 @@ namespace Character.Battle.Controller
             CurrentState.SwitchState(Factory.CreateTakeDamageState(damage));
             EventBus.Publish(EventNames.DamageReceived, new DamageReceivedEvent(damage, Position + Vector3.up * 3));
         }
-        #endregion
 
-        #region Attack Listeners
-        
-        public void OnAttackEnd()
-        {
-            _isAttacking = false;
-            BattleStateMachine.TurnEnded();
-        }
-
-        public void OnAttackStarted()
+        private void OnAttackStarted()
         {
             BattleStateMachine.TurnActionStarted();
         }
 
+        private void OnAttackEnded()
+        {
+            _isAttacking = false;
+            BattleStateMachine.TurnEnded();
+        }
         #endregion
-    }
-
-    public interface IAttackListener
-    {
-        void OnAttackEnd();
-        void OnAttackStarted();
     }
 }
