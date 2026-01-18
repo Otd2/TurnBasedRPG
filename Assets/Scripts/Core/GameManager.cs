@@ -5,6 +5,7 @@ using Character.Services;
 using CharactersDataProvider;
 using Combat.Services;
 using Config;
+using Events;
 using Health.Services;
 using Level.Services;
 using Persistence;
@@ -36,12 +37,13 @@ namespace Core
             _persistentDataManager.Load(OnLoadCompleted);
         }
 
-#if UNITY_EDITOR
-        void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
+            EventBus.Clear();
             _persistentDataManager.Save();
         }
-#elif UNITY_ANDROID
+
+#if UNITY_ANDROID
         void OnApplicationPause(bool isPause)
         {
             if(isPause)
