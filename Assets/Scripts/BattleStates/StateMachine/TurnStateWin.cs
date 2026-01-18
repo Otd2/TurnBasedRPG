@@ -2,19 +2,16 @@
 
 namespace BattleStates.StateMachine
 {
-    public class TurnWin : TurnBaseState
+    public class TurnStateWin : TurnStateBase
     {
-        public TurnWin(BattleStateMachine battleStateMachine, BattleStateFactory factory) 
-            : base(battleStateMachine, factory)
+        public TurnStateWin(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
         }
 
         public override void EnterState()
         {
-            BattleStateMachine.PlayerControllers.ForEach((player) => 
-                player.SetInteractable(false));
-            BattleStateMachine. EnemyControllers.ForEach((enemy) => 
-                enemy.SetInteractable(false));
+            BattleStateMachine.PlayerControllers.ForEach((player) => player.SetInteractable(false));
+            BattleStateMachine.EnemyControllers.ForEach((enemy) => enemy.SetInteractable(false));
         
             BattleStateMachine.BoardController.ClearBattleData();
         

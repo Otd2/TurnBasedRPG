@@ -58,14 +58,13 @@ namespace BattleStates
         void CreateHeroes()
         {
             _playerControllers = new List<UnitBattleController>();
-            var dataProvider = ServiceLocator.Instance.Get<IDataProviderService>();
+            IDataProviderService dataProvider = ServiceLocator.Instance.Get<IDataProviderService>();
             for (var index = 0; index < boardPositions.Length; index++)
             {
-                var boardPosition = boardPositions[index];
-                var id = _persistentDataManager.CurrentGameData.selectedHeroes[index];
-                var characterAttributes = dataProvider.GetHeroAttributeWithId(id);
-                var playerController =
-                    (HeroBattleController)_battleUnitFactory.Create(id, characterAttributes, boardPosition);
+                Transform boardPosition = boardPositions[index];
+                int id = _persistentDataManager.CurrentGameData.selectedHeroes[index];
+                CharacterAttributes characterAttributes = dataProvider.GetHeroAttributeWithId(id);
+                HeroBattleController playerController = (HeroBattleController)_battleUnitFactory.Create(id, characterAttributes, boardPosition);
                 _playerControllers.Add(playerController);
             }
         }
@@ -77,8 +76,7 @@ namespace BattleStates
             int enemyId = _persistentDataManager.CurrentGameData.BattleData.enemyId;
         
             //model
-            EnemyBattleModel enemyModel = new EnemyBattleModel(enemyId, 1, 0, ServiceLocator.Instance.Get<IDataProviderService>().GetEnemyAttributeWithId(enemyId), 
-                _persistentDataManager);
+            EnemyBattleModel enemyModel = new EnemyBattleModel(enemyId, 1, 0, ServiceLocator.Instance.Get<IDataProviderService>().GetEnemyAttributeWithId(enemyId), _persistentDataManager);
         
             //view
             BattleUnitView enemyView = Instantiate(enemyViewPrefab, enemyPosition, false);
@@ -90,11 +88,11 @@ namespace BattleStates
 
         void SetUnitsTargets()
         {
-            foreach (var playerController in _playerControllers)
+            foreach (UnitBattleController playerController in _playerControllers)
             {
                 playerController.SetTargets(_enemyControllers.Cast<ITarget>().ToList());
             }
-            foreach (var enemyController in _enemyControllers)
+            foreach (UnitBattleController enemyController in _enemyControllers)
             {
                 enemyController.SetTargets(_playerControllers.Cast<ITarget>().ToList());
             }
@@ -108,12 +106,12 @@ namespace BattleStates
 
         void ReturnToMenu()
         {
-            foreach (var playerController in _playerControllers)
+            foreach (UnitBattleController playerController in _playerControllers)
             {
                 playerController.Destroy();
             }
 
-            foreach (var enemyController in _enemyControllers)
+            foreach (UnitBattleController enemyController in _enemyControllers)
             {
                 enemyController.Destroy();
             }

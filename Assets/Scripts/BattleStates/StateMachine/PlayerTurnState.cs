@@ -3,10 +3,9 @@ using Character.Battle.Controller;
 
 namespace BattleStates.StateMachine
 {
-    public class PlayerTurn : TurnBaseState
+    public class PlayerTurnState : TurnStateBase
     {
-        public PlayerTurn(BattleStateMachine battleStateMachine, BattleStateFactory factory) 
-            : base(battleStateMachine, factory)
+        public PlayerTurnState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
         }
 
@@ -14,17 +13,15 @@ namespace BattleStates.StateMachine
         {
             if (CheckIfAllCharacterDead(BattleStateMachine.PlayerControllers))
             {
-                SwitchState(Factory.Lose);
+                BattleStateMachine.SwitchState(BattleStateMachine.StateLoseState);
                 return;
             }
         
             BattleStateMachine.UI.ShowPlayerTurnUI();
         
-            BattleStateMachine.PlayerControllers.ForEach((player) => 
-                player.SetTurnStatus(true));
+            BattleStateMachine.PlayerControllers.ForEach((player) => player.SetTurnStatus(true));
             
-            BattleStateMachine.EnemyControllers.ForEach((player) => 
-                player.SetTurnStatus(false));
+            BattleStateMachine.EnemyControllers.ForEach((player) => player.SetTurnStatus(false));
         }
 
         public override void ExitState()
@@ -45,7 +42,7 @@ namespace BattleStates.StateMachine
 
         public override void SwitchToNextTurn()
         {
-            SwitchState(Factory.PlayerActionInProgress);
+            BattleStateMachine.SwitchState(BattleStateMachine.PlayerActionState);
         }
     }
 }

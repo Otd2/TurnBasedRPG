@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Character.Battle.View;
 using DefaultNamespace.Target;
 using DG.Tweening;
+using Events;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Attack
@@ -21,6 +24,13 @@ namespace Attack
         {
             base.Execute();
             _target = SelectRandomTarget();
+
+            if (_target == null)
+            {
+                EventBus.Publish(EventNames.Errors.NoTargetToAttack);
+                return;
+            }
+            
             var startPosition = AttackSourceView.transform.position;
             AttackSourceView.DOKill();
             float halfAnimTime = TotalAnimTime * 0.5f;
@@ -35,8 +45,13 @@ namespace Attack
 
         private ITarget SelectRandomTarget()
         {
-            var randIndex = Random.Range(0, _possibleTargets.Count);
-            return _possibleTargets[randIndex].IsDead ? SelectRandomTarget() : _possibleTargets[randIndex];
+            if (_possibleTargets.All(target => target.IsDead))
+            {
+                Debug.LogError("All targets are dead. This should not happen.");
+                return null;
+            }
+            
+            return _possibleTargets.Where(target => !target.IsDead).ToArray()[Random.Range(0,_possibleTargets.Count)];
         }
 
         protected override void ApplyDamage()

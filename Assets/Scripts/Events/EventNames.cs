@@ -6,5 +6,10 @@ namespace Events
         public const string DamageReceived = "DamageReceived";
         public const string CharacterSelected = "CharacterSelected";
         public const string CharacterUnselected = "CharacterUnselected";
+
+        public static class Errors
+        {
+            public const string NoTargetToAttack = "AttackWhileAllHeroesAreDead";
+        }
     }
 }

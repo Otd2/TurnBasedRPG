@@ -1,11 +1,8 @@
-﻿using Character.Battle.Controller;
-
-namespace BattleStates.StateMachine
+﻿namespace BattleStates.StateMachine
 {
-    public class EnemyActionInProgress : TurnBaseState
+    public class EnemyActionInProgress : TurnStateBase
     {
-        public EnemyActionInProgress(BattleStateMachine battleStateMachine, BattleStateFactory factory) 
-            : base(battleStateMachine, factory)
+        public EnemyActionInProgress(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
         }
 
@@ -19,7 +16,7 @@ namespace BattleStates.StateMachine
 
         public override void SwitchToNextTurn()
         {
-            SwitchState(Factory.PlayerTurn);
+            BattleStateMachine.SwitchState(BattleStateMachine.PlayerTurnState);
         }
     }
 }
