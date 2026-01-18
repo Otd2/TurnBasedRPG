@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Character;
+using Config;
 
 namespace PersistentData
 {
@@ -40,13 +41,13 @@ namespace PersistentData
         
         protected void CreateNewSaveData()
         {
+            var config = ServiceLocator.Instance.Get<IGameConfigService>().Config;
             CurrentGameData = new GameData();
             CurrentGameData.selectedHeroes = new List<int>();
-            for (var index = 0; index < GameConfig.FirstUnlockedHeroes.Length; index++)
+            foreach (CharacterAttributesSo configFirstUnlockedHero in config.FirstUnlockedHeroes)
             {
-                var firstUnlockedHero = GameConfig.FirstUnlockedHeroes[index];
-                CurrentGameData.selectedHeroes.Add(firstUnlockedHero);
-                CurrentGameData.CharactersData.Add(firstUnlockedHero, new CharacterData(0, 1));
+                CurrentGameData.selectedHeroes.Add(configFirstUnlockedHero.ID);
+                CurrentGameData.CharactersData.Add(configFirstUnlockedHero.ID, new CharacterData(0, 1));
             }
             Save();
         }

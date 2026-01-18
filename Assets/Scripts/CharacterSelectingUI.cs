@@ -3,6 +3,7 @@ using System.Linq;
 using Character.Interfaces;
 using Character.Menu;
 using CharactersDataProvider;
+using Config;
 using Events;
 using Events.Interfaces;
 using PersistentData;
@@ -55,8 +56,8 @@ namespace Character
 
         private void CreateDummyButtons()
         {
-            //Create Empty Slots
-            for (int i = _persistentDataManager.CurrentGameData.CharactersData.Count; i < GameConfig.MaxHeroCount; i++)
+            var config = ServiceLocator.Instance.Get<IGameConfigService>().Config;
+            for (int i = _persistentDataManager.CurrentGameData.CharactersData.Count; i < config.MaxHeroCount; i++)
             {
                 _dummyButtons.Add(Instantiate(dummyCharacterUIView, charactersUIParent));
             }
@@ -125,8 +126,9 @@ namespace Character
 
         private void UpdateBattleButtonActivity()
         {
+            var config = ServiceLocator.Instance.Get<IGameConfigService>().Config;
             battleStartButton.interactable =
-                _persistentDataManager.CurrentGameData.selectedHeroes.Count == GameConfig.RequiredHeroCountForBattle;
+                _persistentDataManager.CurrentGameData.selectedHeroes.Count == config.RequiredHeroCountForBattle;
         }
 
     }

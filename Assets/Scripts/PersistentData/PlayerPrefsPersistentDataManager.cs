@@ -1,12 +1,10 @@
 ﻿using System;
-using Character;
 using UnityEngine;
 
 namespace PersistentData
 {
     public class PlayerPrefsPersistentDataManager : PersistantDataManager
     {
-        private readonly GameConfig _config;
         private const string SaveKey = "saveData";
 
         public override void Load(Action onLoadCompleted)

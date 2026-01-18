@@ -1,4 +1,7 @@
-public interface IRewardService : IService
+namespace Reward
 {
-    int GetRewardedExp();
+    public interface IRewardService : IService
+    {
+        int GetRewardedExp();
+    }
 }

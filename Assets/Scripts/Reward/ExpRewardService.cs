@@ -1,16 +1,19 @@
-public class ExpRewardService : IRewardService
+namespace Reward
 {
-    private readonly int _expAmount;
-
-    public ExpRewardService(int expAmount)
+    public class ExpRewardService : IRewardService
     {
-        _expAmount = expAmount;
-    }
+        private readonly int _expAmount;
 
-    public void Initialize() { }
+        public ExpRewardService(int expAmount)
+        {
+            _expAmount = expAmount;
+        }
 
-    public int GetRewardedExp()
-    {
-        return _expAmount;
+        public void Initialize() { }
+
+        public int GetRewardedExp()
+        {
+            return _expAmount;
+        }
     }
 }

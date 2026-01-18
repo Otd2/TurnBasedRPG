@@ -1,4 +1,5 @@
 ﻿using PersistentData;
+using Reward;
 
 namespace Character.Battle.Model
 {
