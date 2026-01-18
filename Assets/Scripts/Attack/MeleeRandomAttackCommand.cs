@@ -51,7 +51,8 @@ namespace Attack
                 return null;
             }
             
-            return _possibleTargets.Where(target => !target.IsDead).ToArray()[Random.Range(0,_possibleTargets.Count)];
+            List<ITarget> aliveTargets = _possibleTargets.Where(target => !target.IsDead).ToList();
+            return aliveTargets[Random.Range(0, aliveTargets.Count)];
         }
 
         protected override void ApplyDamage()
