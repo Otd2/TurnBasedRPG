@@ -1,6 +1,5 @@
 ﻿using Character.Battle.Controller;
 using Input;
-using UnityEngine;
 using CharacterController = Character.Base.CharacterController;
 
 namespace Character.Battle.View

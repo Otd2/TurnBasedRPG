@@ -1,6 +1,6 @@
-﻿using System;
-using Character.Base;
-using HitPoint;
+﻿using Character.Base;
+using Health;
+using Health.UI;
 using UnityEngine;
 
 namespace Character.Battle.View
@@ -24,7 +24,7 @@ namespace Character.Battle.View
             heroSprite.transform.localScale = Vector3.zero;
         }
 
-        public void ConnectHpBar(Health health)
+        public void ConnectHpBar(HealthPoints health)
         {
             healthBarView.SetTotalHp(health.TotalHp);
             healthBarView.SetHp(health.GetHp());

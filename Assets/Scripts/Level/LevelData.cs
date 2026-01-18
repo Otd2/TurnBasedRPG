@@ -1,4 +1,7 @@
-﻿namespace Level
+﻿using Core;
+using Level.Services;
+
+ namespace Level
 {
     public class LevelData
     {

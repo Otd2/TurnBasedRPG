@@ -1,7 +1,7 @@
 ﻿using Character.Base;
-using PersistentData;
+using Persistence;
 
-namespace Character
+namespace Character.Menu
 {
     public class UnitUIModel : UnitModelBase
     {
@@ -10,7 +10,7 @@ namespace Character
         public bool IsSelected => _isSelected;
 
         public UnitUIModel(int id, int level, int xp, CharacterAttributes attributes
-            , PersistantDataManager persistantDataManager) : 
+            , PersistentDataManager persistantDataManager) : 
             base(id, level, xp, attributes, persistantDataManager)
         {
             _isSelected = persistantDataManager.CurrentGameData.selectedHeroes.Contains(Id);

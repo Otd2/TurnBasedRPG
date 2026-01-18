@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using Attack;
-using BattleStates.StateMachine;
+using Combat;
+using Combat.Commands;
+using Battle.StateMachine;
 using Character.Base;
 using Character.Battle.Model;
 using Character.Battle.States;
 using Character.Battle.View;
-using DefaultNamespace.Target;
+using Core.Target;
 using Events;
 using UnityEngine;
 using CharacterController = Character.Base.CharacterController;

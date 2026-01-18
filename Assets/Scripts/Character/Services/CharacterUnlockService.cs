@@ -1,5 +1,5 @@
 using Character.Interfaces;
-using PersistentData;
+using Persistence;
 using UnityEngine;
 
 namespace Character.Services
@@ -7,9 +7,9 @@ namespace Character.Services
     public class CharacterUnlockService : ICharacterUnlockLogicService
     {
         private readonly int _unlockEveryBattle;
-        private readonly PersistantDataManager _persistantDataManager;
+        private readonly PersistentDataManager _persistantDataManager;
 
-        public CharacterUnlockService(int unlockEveryBattle, PersistantDataManager persistantDataManager)
+        public CharacterUnlockService(int unlockEveryBattle, PersistentDataManager persistantDataManager)
         {
             _unlockEveryBattle = unlockEveryBattle;
             _persistantDataManager = persistantDataManager;

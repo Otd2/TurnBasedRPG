@@ -1,3 +1,5 @@
+using Core;
+
 namespace Character.Interfaces
 {
     public interface ICharacterUnlockLogicService : IService

@@ -1,10 +1,9 @@
-﻿using BattleStates.StateMachine;
+﻿using Battle.StateMachine;
 using Character.Base;
 using Character.Battle.Controller;
 using Character.Battle.Model;
 using Character.Battle.View;
-using DefaultNamespace;
-using PersistentData;
+using Persistence;
 using UnityEngine;
 using CharacterController = Character.Base.CharacterController;
 
@@ -14,7 +13,7 @@ namespace Character.Battle
     {
         private readonly IBattleStateMachine _battleStateMachine;
 
-        public PlayerBattleUnitFactory(UnitView unitPrefab, PersistantDataManager persistentDataManager, IBattleStateMachine battleStateMachine) : 
+        public PlayerBattleUnitFactory(UnitView unitPrefab, PersistentDataManager persistentDataManager, IBattleStateMachine battleStateMachine) : 
             base(unitPrefab, persistentDataManager)
         {
             _battleStateMachine = battleStateMachine;

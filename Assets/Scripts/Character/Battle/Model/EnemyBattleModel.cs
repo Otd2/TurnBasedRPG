@@ -1,4 +1,4 @@
-﻿using PersistentData;
+﻿using Persistence;
 
 namespace Character.Battle.Model
 {
@@ -9,7 +9,7 @@ namespace Character.Battle.Model
             PersistentDataManager.GetBattleData().enemyHp = newhealth;
         }
 
-        public EnemyBattleModel(int id, int level, int xp, CharacterAttributes attributes, PersistantDataManager persistentDataManager) : base(id, level, xp, attributes, persistentDataManager)
+        public EnemyBattleModel(int id, int level, int xp, CharacterAttributes attributes, PersistentDataManager persistentDataManager) : base(id, level, xp, attributes, persistentDataManager)
         {
             hp.HealthChange(PersistentDataManager.GetBattleData().enemyHp);
         }

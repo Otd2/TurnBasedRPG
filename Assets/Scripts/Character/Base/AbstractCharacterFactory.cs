@@ -1,4 +1,4 @@
-﻿using PersistentData;
+﻿using Persistence;
 using UnityEngine;
 
 namespace Character.Base
@@ -6,15 +6,14 @@ namespace Character.Base
     public abstract class AbstractCharacterFactory
     {
         protected readonly UnitView UnitPrefab;
-        protected readonly PersistantDataManager PersistentDataManager;
+        protected readonly PersistentDataManager PersistentDataManager;
 
-        protected AbstractCharacterFactory(UnitView unitPrefab, PersistantDataManager persistentDataManager)
+        protected AbstractCharacterFactory(UnitView unitPrefab, PersistentDataManager persistentDataManager)
         {
             UnitPrefab = unitPrefab;
             PersistentDataManager = persistentDataManager;
         }
 
-        public abstract CharacterController Create(int characterId, CharacterAttributes characterAttributes,
-            Transform parent);
+        public abstract CharacterController Create(int characterId, CharacterAttributes characterAttributes, Transform parent);
     }
 }

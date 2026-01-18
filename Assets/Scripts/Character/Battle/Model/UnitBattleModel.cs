@@ -1,5 +1,5 @@
 ﻿using Character.Base;
-using PersistentData;
+using Persistence;
 
 namespace Character.Battle.Model
 {
@@ -8,7 +8,7 @@ namespace Character.Battle.Model
         public bool IsDead => hp.GetHp() <= 0;
         public bool IsUnitsTurn { get; set; }
 
-        protected UnitBattleModel(int id, int level, int xp, CharacterAttributes attributes, PersistantDataManager persistentDataManager) : base(id, level, xp, attributes, persistentDataManager)
+        protected UnitBattleModel(int id, int level, int xp, CharacterAttributes attributes, PersistentDataManager persistentDataManager) : base(id, level, xp, attributes, persistentDataManager)
         {
             //update persistent data when health changed
             hp.OnHealthChanged += OnHealthChanged;

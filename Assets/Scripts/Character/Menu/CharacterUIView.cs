@@ -1,11 +1,9 @@
-﻿using System;
-using Character.Base;
-using Character.Menu;
+﻿using Character.Base;
 using Input;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Character
+namespace Character.Menu
 {
     public class CharacterUIView : UnitView
     {

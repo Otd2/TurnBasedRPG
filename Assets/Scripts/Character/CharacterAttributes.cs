@@ -1,5 +1,5 @@
 ﻿using System;
-using Attack;
+using Combat;
 using UnityEngine;
 
 namespace Character

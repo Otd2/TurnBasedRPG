@@ -1,16 +1,13 @@
-﻿using System.Linq;
-using Character.Base;
-using Character.Menu;
-using DefaultNamespace;
-using PersistentData;
+﻿using Character.Base;
+using Persistence;
 using UnityEngine;
 using CharacterController = Character.Base.CharacterController;
 
-namespace Character
+namespace Character.Menu
 {
     public class MenuCharacterFactory : AbstractCharacterFactory
     {
-        public MenuCharacterFactory(UnitView unitPrefab, PersistantDataManager persistentDataManager) : base(unitPrefab, persistentDataManager)
+        public MenuCharacterFactory(UnitView unitPrefab, PersistentDataManager persistentDataManager) : base(unitPrefab, persistentDataManager)
         {
         }
 

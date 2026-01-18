@@ -1,4 +1,4 @@
-﻿using BattleStates.StateMachine;
+﻿using Battle.StateMachine;
 using Character.Base;
 using Character.Battle.Model;
 using Character.Battle.View;
