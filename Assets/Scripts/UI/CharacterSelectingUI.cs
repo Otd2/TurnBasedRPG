@@ -32,8 +32,7 @@ namespace UI
             battleStartButton.onClick.AddListener(onBattleStarted);
             _persistentDataManager = persistentDataManager;
             
-            _factory =
-                new MenuCharacterFactory(characterUiView, persistentDataManager);
+            _factory = new MenuCharacterFactory(characterUiView, persistentDataManager);
             
             EventBus.Subscribe(EventNames.CharacterSelected, OnHeroSelectClicked);
             EventBus.Subscribe(EventNames.CharacterUnselected, OnHeroSelectionRemoved);

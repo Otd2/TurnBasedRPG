@@ -13,9 +13,16 @@ namespace Battle.StateMachine
 
         public override void EnterState()
         {
+            // Check win condition before enemy turn starts
+            if (CheckIfAllCharacterDead(BattleStateMachine.EnemyControllers))
+            {
+                BattleStateMachine.SwitchState(BattleStateMachine.WinState);
+                return;
+            }
+            
             Subscribe(EventNames.Errors.NoTargetToAttack, OnNoTargetToAttackHandler);
-            BattleStateMachine.EnemyControllers.ForEach((enemy) => enemy.SetTurnStatus(true));
-            BattleStateMachine.PlayerControllers.ForEach((enemy) => enemy.SetTurnStatus(false));
+            BattleStateMachine.EnemyControllers.ForEach(enemy => enemy.SetTurnStatus(true));
+            BattleStateMachine.PlayerControllers.ForEach(player => player.SetTurnStatus(false));
         }
 
         /// <summary>
