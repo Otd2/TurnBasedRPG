@@ -32,6 +32,8 @@ namespace Character.Battle.Controller
         protected UnitAttackingState AttackingState;
         protected UnitTakeDamageState TakeDamageState;
         protected UnitDiedState DiedState;
+        
+        private float _offset = 3;
 
         protected UnitBattleController(UnitView view, UnitBattleModel model, IBattleStateMachine battleStateMachine) : base(view, model)
         {
@@ -92,6 +94,8 @@ namespace Character.Battle.Controller
             UnitView.Destroy();
         }
 
+        public virtual void BattleEnd() { }
+
         public void SetInteractable(bool isUnitsTurn)
         {
             Model.IsUnitsTurn = isUnitsTurn;
@@ -115,10 +119,10 @@ namespace Character.Battle.Controller
 
         public void TakeDamage(int damage)
         {
-            var newHp = Model.Hp.GetHp() - damage;
+            int newHp = Model.Hp.GetHp() - damage;
             Model.Hp.HealthChange(newHp);
-            
-            EventBus.Publish(EventNames.DamageReceived, new DamageReceivedEvent(damage, Position + Vector3.up * 3));
+
+            Fire (EventNames.DamageReceived, new DamageReceivedEvent(damage, Position + Vector3.up * _offset));
 
             SwitchState(IsDead ? DiedState : TakeDamageState);
         }

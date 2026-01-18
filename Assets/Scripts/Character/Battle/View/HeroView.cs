@@ -6,12 +6,13 @@ namespace Character.Battle.View
 {
     public class HeroView : BattleUnitView
     {
+        private HeroBattleController HeroController => (HeroBattleController)Controller;
         private InteractionManager interactionManager;
+
         public override void SetController(CharacterController controller)
         {
             base.SetController(controller);
             
-            //Interaction Management
             interactionManager = new InteractionManager();
             interactionManager.AssignLongTouchDetector(gameObject, OnLongTouch, OnShortTouch, null);
         }
@@ -23,12 +24,12 @@ namespace Character.Battle.View
 
         private void OnLongTouch()
         {
-            ((HeroBattleController)Controller).ShowInfoPopup();
+            HeroController.ShowInfoPopup();
         }
 
         private void OnShortTouch()
         {
-            ((HeroBattleController)Controller).Attack();
+            HeroController.Attack();
         }
     }
     

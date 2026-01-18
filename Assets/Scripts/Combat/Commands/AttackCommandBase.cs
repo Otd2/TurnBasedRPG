@@ -1,9 +1,10 @@
 using System;
 using Character.Battle.View;
+using Events;
 
 namespace Combat.Commands
 {
-    public class AttackCommandBase : ICommand
+    public class AttackCommandBase : EventLayer, ICommand
     {
         protected readonly BattleUnitView AttackSourceView;
         protected readonly float AnimDelay;

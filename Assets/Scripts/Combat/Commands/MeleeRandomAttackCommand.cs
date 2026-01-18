@@ -27,7 +27,7 @@ namespace Combat.Commands
 
             if (_target == null)
             {
-                EventBus.Publish(EventNames.Errors.NoTargetToAttack);
+                Fire(EventNames.Errors.NoTargetToAttack);
                 return;
             }
             

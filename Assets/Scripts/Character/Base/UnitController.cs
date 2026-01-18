@@ -1,6 +1,8 @@
-﻿namespace Character.Base
+﻿using Events;
+
+namespace Character.Base
 {
-    public abstract class CharacterController
+    public abstract class CharacterController : EventLayer
     {
 
         protected CharacterController(UnitView view, UnitModelBase model)

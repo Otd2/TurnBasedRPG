@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 
 namespace UI.InfoPopup
 {
-    public abstract class PopupController : MonoBehaviour, IPopupController
+    public abstract class PopupController : MonoBehaviourEventLayer, IPopupController
     {
         [SerializeField] private RectTransform popupPanel; 
         public virtual void Show()

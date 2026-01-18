@@ -22,12 +22,12 @@ namespace UI.InfoPopup
 
         private void OnEnable()
         {
-            EventBus.Subscribe(EventNames.ShowInfoPopup, OnShowInfoPopup);
+            Subscribe(EventNames.ShowInfoPopup, OnShowInfoPopup);
         }
 
         private void OnDisable()
         {
-            EventBus.Unsubscribe(EventNames.ShowInfoPopup, OnShowInfoPopup);
+            Unsubscribe(EventNames.ShowInfoPopup, OnShowInfoPopup);
         }
 
         private void OnDestroy()

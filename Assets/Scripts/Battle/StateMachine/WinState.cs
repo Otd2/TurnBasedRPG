@@ -1,6 +1,4 @@
-﻿using Character.Battle.Controller;
-
-namespace Battle.StateMachine
+﻿namespace Battle.StateMachine
 {
     public class WinState : TurnStateBase
     {
@@ -10,16 +8,11 @@ namespace Battle.StateMachine
 
         public override void EnterState()
         {
-            BattleStateMachine.PlayerControllers.ForEach((player) => player.SetInteractable(false));
-            BattleStateMachine.EnemyControllers.ForEach((enemy) => enemy.SetInteractable(false));
+            BattleStateMachine.PlayerControllers.ForEach(player => player.SetInteractable(false));
+            BattleStateMachine.EnemyControllers.ForEach(enemy => enemy.SetInteractable(false));
         
             BattleStateMachine.BoardController.ClearBattleData();
-        
-            foreach (var playerController in BattleStateMachine.PlayerControllers)
-            {
-                ((HeroBattleController)playerController).BattleEnd();
-            }
-        
+            BattleStateMachine.PlayerControllers.ForEach(player => player.BattleEnd());
             BattleStateMachine.UI.ShowWinUI();
         }
 

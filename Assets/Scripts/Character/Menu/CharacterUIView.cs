@@ -11,11 +11,11 @@ namespace Character.Menu
         [SerializeField] private Image frame;
         private InteractionManager _interactionManager;
 
+        private CharacterUIController UIController => (CharacterUIController)Controller;
+
         private void Awake()
         {
-            _interactionManager =
-                new InteractionManager();
-            
+            _interactionManager = new InteractionManager();
             _interactionManager.AssignLongTouchDetector(gameObject, OnLongTouch, OnShortTouch, OnTouchStarted);
             _interactionManager.SetInteractable(true);
         }
@@ -36,12 +36,12 @@ namespace Character.Menu
 
         private void OnLongTouch()
         {
-            ((CharacterUIController)Controller).ShowInfoPopup();
+            UIController.ShowInfoPopup();
         }
 
         private void OnShortTouch()
         {
-            ((CharacterUIController)Controller).OnClickedHero();
+            UIController.OnClickedHero();
         }
     }
 }

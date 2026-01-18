@@ -24,7 +24,7 @@ namespace Character.Menu
 
         public void ShowInfoPopup()
         {
-            EventBus.Publish(EventNames.ShowInfoPopup, new ShowInfoPopupEvent(_model, _view.transform.position));
+            Fire(EventNames.ShowInfoPopup, new ShowInfoPopupEvent(_model, _view.transform.position));
         }
 
         public void OnClickedHero()
@@ -52,8 +52,8 @@ namespace Character.Menu
 
         private void NotifySelectionChange()
         {
-            var eventName = _model.IsSelected ? EventNames.CharacterSelected : EventNames.CharacterUnselected;
-            EventBus.Publish(eventName, new CharacterSelectionEvent(_model.Id));
+            string eventName = _model.IsSelected ? EventNames.CharacterSelected : EventNames.CharacterUnselected;
+            Fire(eventName, new CharacterSelectionEvent(_model.Id));
         }
 
         public override void Destroy()

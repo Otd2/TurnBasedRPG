@@ -7,7 +7,7 @@ using UnityEngine.Pool;
 
 namespace UI.FloatingText
 {
-    public class FloatingTextPoolController : MonoBehaviour
+    public class FloatingTextPoolController : MonoBehaviourEventLayer
     {
         public int maxPoolSize = 5;
         public bool collectionChecks = true;
@@ -58,12 +58,12 @@ namespace UI.FloatingText
 
         private void OnEnable()
         {
-            EventBus.Subscribe(EventNames.DamageReceived, OnDamageReceived);
+            Subscribe(EventNames.DamageReceived, OnDamageReceived);
         }
         
         private void OnDisable()
         {
-            EventBus.Unsubscribe(EventNames.DamageReceived, OnDamageReceived);
+            Unsubscribe(EventNames.DamageReceived, OnDamageReceived);
         }
 
         private void OnDamageReceived(IEvent evt)
