@@ -14,12 +14,6 @@ namespace BattleStates.StateMachine
         public override void EnterState()
         {
             Subscribe(EventNames.Errors.NoTargetToAttack, OnNoTargetToAttackHandler);
-            if (CheckIfAllCharacterDead(BattleStateMachine.EnemyControllers))
-            {
-                BattleStateMachine.SwitchState(BattleStateMachine.StateWinState);
-                return;
-            }
-
             BattleStateMachine.EnemyControllers.ForEach((enemy) => enemy.SetTurnStatus(true));
             BattleStateMachine.PlayerControllers.ForEach((enemy) => enemy.SetTurnStatus(false));
         }
@@ -35,6 +29,7 @@ namespace BattleStates.StateMachine
 
         public override void ExitState()
         {
+            Unsubscribe(EventNames.Errors.NoTargetToAttack, OnNoTargetToAttackHandler);
         }
 
         private bool CheckIfAllCharacterDead(List<UnitBattleController> battleCharacters)
@@ -50,6 +45,11 @@ namespace BattleStates.StateMachine
 
         public override void SwitchToNextTurn()
         {
+            if (CheckIfAllCharacterDead(BattleStateMachine.EnemyControllers))
+            {
+                BattleStateMachine.SwitchState(BattleStateMachine.WinState);
+                return;
+            }
             BattleStateMachine.SwitchState(BattleStateMachine.EnemyActionState);
         }
     }

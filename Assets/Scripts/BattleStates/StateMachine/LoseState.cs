@@ -1,10 +1,8 @@
-﻿using Character.Battle.Controller;
-
-namespace BattleStates.StateMachine
+﻿namespace BattleStates.StateMachine
 {
-    public class TurnStateWin : TurnStateBase
+    public class LoseState : TurnStateBase
     {
-        public TurnStateWin(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+        public LoseState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
         }
 
@@ -12,15 +10,10 @@ namespace BattleStates.StateMachine
         {
             BattleStateMachine.PlayerControllers.ForEach((player) => player.SetInteractable(false));
             BattleStateMachine.EnemyControllers.ForEach((enemy) => enemy.SetInteractable(false));
-        
+
             BattleStateMachine.BoardController.ClearBattleData();
         
-            foreach (var playerController in BattleStateMachine.PlayerControllers)
-            {
-                ((HeroBattleController)playerController).BattleEnd();
-            }
-        
-            BattleStateMachine.UI.ShowWinUI();
+            BattleStateMachine.UI.ShowLoseUI();
         }
 
         public override void ExitState()

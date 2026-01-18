@@ -16,8 +16,8 @@ namespace BattleStates.StateMachine
         public readonly EnemyTurnState EnemyTurnState;
         public readonly PlayerActionInProgress PlayerActionState;
         public readonly EnemyActionInProgress EnemyActionState;
-        public readonly TurnStateWin StateWinState;
-        public readonly TurnStateLose StateLoseState;
+        public readonly WinState WinState;
+        public readonly LoseState LoseState;
 
         public BattleStateMachine(BattleBoardController battleBoardController, BattleUI battleUI)
         {
@@ -29,8 +29,8 @@ namespace BattleStates.StateMachine
             EnemyTurnState = new EnemyTurnState(this);
             PlayerActionState = new PlayerActionInProgress(this);
             EnemyActionState = new EnemyActionInProgress(this);
-            StateWinState = new TurnStateWin(this);
-            StateLoseState = new TurnStateLose(this);
+            WinState = new WinState(this);
+            LoseState = new LoseState(this);
         }
 
         public void InitBattle(List<UnitBattleController> playerControllers, List<UnitBattleController> enemyControllers)

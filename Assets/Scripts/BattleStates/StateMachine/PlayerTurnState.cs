@@ -13,7 +13,7 @@ namespace BattleStates.StateMachine
         {
             if (CheckIfAllCharacterDead(BattleStateMachine.PlayerControllers))
             {
-                BattleStateMachine.SwitchState(BattleStateMachine.StateLoseState);
+                BattleStateMachine.SwitchState(BattleStateMachine.LoseState);
                 return;
             }
         
