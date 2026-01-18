@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322c46cc654fd4e5bb8fe6916479a580, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfigSO
-  FirstUnlockedHeroes: 010000000200000003000000
-  LevelUpOnEachXp: 5
-  CharacterUnlockAfterBattle: 5
-  AttackIncreasePercentOnEachLevel: 10
-  HealthIncreasePercentOnEachLevel: 10
-  RequiredHeroCountForBattle: 3
-  MaxHeroCount: 10
+  Config:
+    FirstUnlockedHeroes:
+    - {fileID: 11400000, guid: 12a31e0b0cefd504dbd5a309156a9d67, type: 2}
+    - {fileID: 11400000, guid: 91b7c22ba1b9a2d4b9fd9d1dacb9b08c, type: 2}
+    - {fileID: 11400000, guid: 4140bb4c93d0fa8498b0f8c1803e1015, type: 2}
+    LevelUpOnEachXp: 5
+    ExpPerWin: 1
+    CharacterUnlockAfterBattle: 5
+    AttackIncreasePercentOnEachLevel: 10
+    HealthIncreasePercentOnEachLevel: 10
+    RequiredHeroCountForBattle: 3
+    MaxHeroCount: 10
