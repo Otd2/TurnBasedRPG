@@ -4,19 +4,14 @@ namespace Character.Battle.States
 {
     public class UnitTurnEndedState : UnitBaseState
     {
+        public UnitTurnEndedState(UnitBattleController controller, CharacterAnimationController animController) : base(controller, animController) { }
+
         public override void EnterState()
         {
-            UnitController.Model.IsUnitsTurn = false;
-            CharacterAnimationController.PlayAnimation("Deactivated");
+            Controller.Model.IsUnitsTurn = false;
+            AnimController.PlayAnimation("Deactivated");
         }
 
-        public override void ExitState()
-        {
-        }
-
-
-        public UnitTurnEndedState(UnitBattleController unitController, CharacterAnimationController characterAnimationController, UnitStateFactory factory) : base(unitController, characterAnimationController, factory)
-        {
-        }
+        public override void ExitState() { }
     }
 }

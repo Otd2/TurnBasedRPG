@@ -4,24 +4,16 @@ namespace Character.Battle.States
 {
     public abstract class UnitBaseState
     {
-        protected readonly UnitBattleController UnitController;
-        protected readonly CharacterAnimationController CharacterAnimationController;
-        protected readonly UnitStateFactory Factory;
+        protected readonly UnitBattleController Controller;
+        protected readonly CharacterAnimationController AnimController;
 
-        protected UnitBaseState(UnitBattleController unitController, CharacterAnimationController characterAnimationController, UnitStateFactory factory)
+        protected UnitBaseState(UnitBattleController controller, CharacterAnimationController animController)
         {
-            UnitController = unitController;
-            CharacterAnimationController = characterAnimationController;
-            Factory = factory;
+            Controller = controller;
+            AnimController = animController;
         }
+        
         public abstract void EnterState();
         public abstract void ExitState();
-
-        public virtual void SwitchState(UnitBaseState unitBaseState)
-        {
-            ExitState();
-            unitBaseState.EnterState();
-            UnitController.CurrentState = unitBaseState;
-        }
     }
 }

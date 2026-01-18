@@ -2,21 +2,17 @@
 
 namespace Character.Battle.States
 {
-    public class UnitTurnStartedState: UnitBaseState
+    public class UnitTurnStartedState : UnitBaseState
     {
+        public UnitTurnStartedState(UnitBattleController controller, CharacterAnimationController animController) : base(controller, animController) { }
+
         public override void EnterState()
         {
-            UnitController.Model.IsUnitsTurn = true;
-            UnitController.SetInteractable(true);
-            CharacterAnimationController.PlayAnimation("Activated");
+            Controller.Model.IsUnitsTurn = true;
+            Controller.SetInteractable(true);
+            AnimController.PlayAnimation("Activated");
         }
 
-        public override void ExitState()
-        {
-        }
-
-        public UnitTurnStartedState(UnitBattleController unitController, CharacterAnimationController characterAnimationController, UnitStateFactory factory) : base(unitController, characterAnimationController, factory)
-        {
-        }
+        public override void ExitState() { }
     }
 }

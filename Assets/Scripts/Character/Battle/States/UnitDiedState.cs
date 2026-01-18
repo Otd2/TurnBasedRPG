@@ -4,18 +4,13 @@ namespace Character.Battle.States
 {
     public class UnitDiedState : UnitBaseState
     {
+        public UnitDiedState(UnitBattleController controller, CharacterAnimationController animController) : base(controller, animController) { }
+
         public override void EnterState()
         {
-            CharacterAnimationController.PlayAnimation("Died");
+            AnimController.PlayAnimation("Died");
         }
 
-        public override void ExitState()
-        {
-        }
-
-
-        public UnitDiedState(UnitBattleController unitController, CharacterAnimationController characterAnimationController, UnitStateFactory factory) : base(unitController, characterAnimationController, factory)
-        {
-        }
+        public override void ExitState() { }
     }
 }

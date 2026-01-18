@@ -74,14 +74,14 @@ namespace BattleStates
         {
             _enemyControllers = new List<UnitBattleController>();
             
-            var enemyId = _persistentDataManager.CurrentGameData.BattleData.enemyId;
+            int enemyId = _persistentDataManager.CurrentGameData.BattleData.enemyId;
         
             //model
-            var enemyModel = new EnemyBattleModel(enemyId, 1, 0, ServiceLocator.Instance.Get<IDataProviderService>().GetEnemyAttributeWithId(enemyId), 
+            EnemyBattleModel enemyModel = new EnemyBattleModel(enemyId, 1, 0, ServiceLocator.Instance.Get<IDataProviderService>().GetEnemyAttributeWithId(enemyId), 
                 _persistentDataManager);
         
             //view
-            var enemyView = Instantiate(enemyViewPrefab, enemyPosition, false);
+            BattleUnitView enemyView = Instantiate(enemyViewPrefab, enemyPosition, false);
             enemyView.transform.localPosition = Vector3.zero;
         
             //controller

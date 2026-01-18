@@ -13,33 +13,47 @@ using CharacterController = Character.Base.CharacterController;
 namespace Character.Battle.Controller
 {
     public class UnitBattleController : CharacterController, ITarget
-    { 
-        
-        public UnitBaseState CurrentState;
+    {
+        public UnitBaseState CurrentState { get; private set; }
         public bool IsDead => Model.IsDead;
         public AttackCommandBase AttackCommand { get; private set; }
         public Vector3 Position => UnitView.GetAttackPosition();
         public UnitBattleModel Model { get; }
         
         protected BattleUnitView UnitView;
-        protected readonly UnitStateFactory Factory;
         private IBattleStateMachine BattleStateMachine { get; }
         private bool _isAttacking;
+        private List<ITarget> _targets;
+
+        // Cached states
+        protected UnitTurnStartedState TurnStartedState;
+        protected UnitTurnEndedState TurnEndedState;
+        protected UnitAttackingState AttackingState;
+        protected UnitTakeDamageState TakeDamageState;
+        protected UnitDiedState DiedState;
 
         protected UnitBattleController(UnitView view, UnitBattleModel model, IBattleStateMachine battleStateMachine) : base(view, model)
         {
             Model = model;
             BattleStateMachine = battleStateMachine;
             AssignView(view);
-            
-            //State factory to create Unit States
-            Factory = new UnitStateFactory(this, ((BattleUnitView)view).AnimationController);
-            
-            //Start with inactive state
-            CurrentState = Factory.TurnEndedState;
+
+            CharacterAnimationController animController = ((BattleUnitView)view).AnimationController;
+            InitializeUnitStates(animController);
+
+            CurrentState = TurnEndedState;
             CurrentState.EnterState();
         }
-        
+
+        private void InitializeUnitStates(CharacterAnimationController animController)
+        {
+            TurnStartedState = new UnitTurnStartedState(this, animController);
+            TurnEndedState = new UnitTurnEndedState(this, animController);
+            AttackingState = new UnitAttackingState(this, animController);
+            TakeDamageState = new UnitTakeDamageState(this, animController);
+            DiedState = new UnitDiedState(this, animController);
+        }
+
         protected override void AssignView(UnitView view)
         {
             UnitView = (BattleUnitView)view;
@@ -47,9 +61,14 @@ namespace Character.Battle.Controller
             UnitView.SetSprite(Model.Attributes.Sprite);
             UnitView.ConnectHpBar(Model.Hp);
         }
-        
-        private List<ITarget> _targets;
-        
+
+        protected void SwitchState(UnitBaseState newState)
+        {
+            CurrentState.ExitState();
+            CurrentState = newState;
+            CurrentState.EnterState();
+        }
+
         public void SetTargets(List<ITarget> targets)
         {
             _targets = targets;
@@ -72,7 +91,6 @@ namespace Character.Battle.Controller
             UnitView.Destroy();
         }
 
-        //called by battle state machine
         public void SetInteractable(bool isUnitsTurn)
         {
             Model.IsUnitsTurn = isUnitsTurn;
@@ -80,10 +98,9 @@ namespace Character.Battle.Controller
         
         public virtual void SetTurnStatus(bool isUnitsTurn)
         {
-            if(!_isAttacking)
-                CurrentState.SwitchState(isUnitsTurn ? Factory.TurnStartedState : Factory.TurnEndedState);
+            if (!_isAttacking)
+                SwitchState(isUnitsTurn ? TurnStartedState : TurnEndedState);
         }
-
 
         public void Attack()
         {
@@ -91,15 +108,18 @@ namespace Character.Battle.Controller
             {
                 _isAttacking = true;
                 CreateAttackCommand();
-                CurrentState.SwitchState(Factory.AttackingSate);
+                SwitchState(AttackingState);
             }
         }
 
-        #region Target Listener
         public void TakeDamage(int damage)
         {
-            CurrentState.SwitchState(Factory.CreateTakeDamageState(damage));
+            var newHp = Model.Hp.GetHp() - damage;
+            Model.Hp.HealthChange(newHp);
+            
             EventBus.Publish(EventNames.DamageReceived, new DamageReceivedEvent(damage, Position + Vector3.up * 3));
+
+            SwitchState(IsDead ? DiedState : TakeDamageState);
         }
 
         private void OnAttackStarted()
@@ -112,6 +132,5 @@ namespace Character.Battle.Controller
             _isAttacking = false;
             BattleStateMachine.TurnEnded();
         }
-        #endregion
     }
 }
